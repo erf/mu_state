@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
 
-import 'states/counter_state.dart';
+import 'states/async_counter_state.dart';
+import 'states/load_state.dart';
 import 'states/random_state.dart';
 
 void main() {
@@ -66,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: MuMultiBuilder(
-                states: [counterState, autoCounterState],
+                states: [counterState, autoCounterState, loadState],
                 builder: (context, values, child) {
                   return Column(
                     children: [
@@ -76,6 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Text(
                         'auto counter: ${values[1].data}',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      Text(
+                        'load state: ${values[2].loading ? 'loading' : values[2].data}',
                         style: Theme.of(context).textTheme.headline4,
                       ),
                     ],
@@ -89,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           counterState.increment();
+          loadState.load();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),

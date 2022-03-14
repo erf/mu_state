@@ -29,15 +29,17 @@ In `counter_state.dart`:
 ```Dart
 import 'package:mu_state/mu_state.dart';
 
-class CounterState extends MuState<int> {
-  CounterState(MuEvent<int> value) : super(value);
+class LoadState extends MuState<String> {
+  LoadState(MuEvent<String> value) : super(value);
 
-  void increment() {
-    value = MuEvent.data(value.data! + 1);
+  void load() async {
+    value = const MuEvent.loading();
+    await Future.delayed(const Duration(milliseconds: 500));
+    value = const MuEvent.data('done');
   }
 }
 
-final counterState = CounterState(const MuEvent.data(0));
+final loadState = LoadState(const MuEvent.data('initial'));
 ```
 
 In `main.dart`:
@@ -45,8 +47,8 @@ In `main.dart`:
 ```Dart
 Scaffold(
   body: Center(
-    child: MuBuilder(
-      state: counterState,
+    child: MuBuilder<String>(
+      state: loadState,
       builder: (context, event, child) {
         if (event.loading) {
           return const CircularProgressIndicator();
