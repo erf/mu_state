@@ -18,9 +18,9 @@ Declare state as a global final `MuState` variable and pass it an initial
 
 Implement a custom state class which extends `MuState`, for more complex state handling.
 
-Listen to single state objects using `MuBuilder`.
+Listen to a single state object using `MuBuilder`.
 
-Listen to multiple state objects using `MuMultiBuilder`, which notifies you with a list of values.
+Listen to multiple state objects using `MuMultiBuilder`, which notifies you with a list of `MuEvent` values.
 
 ## Usage
 
