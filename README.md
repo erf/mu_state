@@ -4,8 +4,7 @@ A set of helpers for **pragmatic state handling in Flutter** as mentioned in my 
 
 ## Classes
 
-A set of classes for handling state based on `ValueNotifier` and
-`ValueListenableBuilder`, but by wrapping state in a `MuEvent` object.
+A set of classes for handling state based on `ValueNotifier` and `ValueListenableBuilder`, where state is wrapped in a `MuEvent` object.
 
 - `MuEvent` - state event with `data`, `loading` and `error` properties
 - `MuState` - a `ValueNotifier` of type `MuEvent`
