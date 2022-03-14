@@ -38,19 +38,22 @@ typedef MuState<T> = ValueNotifier<MuEvent<T>>;
 class MuBuilder<T> extends ValueListenableBuilder<MuEvent<T>> {
   const MuBuilder({
     Key? key,
+
+    /// The [state] to listen to.
     required ValueListenable<MuEvent<T>> state,
+
+    /// The builder function to call when the [state] changes.
     required ValueWidgetBuilder<MuEvent<T>> builder,
   }) : super(key: key, valueListenable: state, builder: builder);
 }
 
-/// [MuMultiBuilder] will listen to multiple [MuState]s and notify the [builder]
-/// with a list of values in the same order if any of the [MuState]s changes.
+/// Listen to multiple [MuState]s and get notified with a list of values.
 class MuMultiBuilder extends StatelessWidget {
   /// List of [MuState]s to listen to.
   final List<MuState> states;
 
-  /// The builder function is called when the value of any of the [states]
-  /// changes.  The order of the values will be same as the [states].
+  /// The builder function is called when the value of any of the [states] changes.
+  /// The order of the values will be same as the [states] list.
   final Widget Function(
       BuildContext context, List<MuEvent> values, Widget? child) builder;
 
@@ -59,7 +62,11 @@ class MuMultiBuilder extends StatelessWidget {
 
   const MuMultiBuilder({
     Key? key,
+
+    /// List of [MuState]s to listen to.
     required this.states,
+
+    /// The builder function is called when the value of any of the [states] changes.
     required this.builder,
     this.child,
   })  : assert(states.length != 0),
