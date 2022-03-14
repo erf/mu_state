@@ -1,39 +1,74 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# mu_state
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+A set of helpers for **pragmatic state handling in Flutter** as mentioned in my [Medium article ](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2).
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+## Classes
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A set of classes for handling state based on `ValueNotifier` and
+`ValueListenableBuilder`, but just wrapping the state in a `MuEvent` object.
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- `MuEvent` - state event with `data`, `loading` and `error` properties
+- `MuState` - a `ValueNotifier` which holds a `MuEvent`
+- `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent`
+- `MuMultiBuilder` - listen to multiple `MuState` objects and notify with values 
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Declare your state as a global final `MuState` variable and pass it an initial
+`MuEvent`. Give it a new `MuEvent` object as the state changes.
+
+Implement your own state class which inherits from `MuState` for more complex
+state handling.
+
+Listen to single state objects using `MuBuilder`.
+
+Listen to multiple state objects using `MuMultiBuilder`, which notifies you with
+a list of values.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+In `counter_state.dart`:
 
-```dart
-const like = 'sample';
+```Dart
+import 'package:mu_state/mu_state.dart';
+
+class CounterState extends MuState<int> {
+  CounterState(MuEvent<int> value) : super(value);
+
+  void increment() {
+    value = MuEvent.data(value.data! + 1);
+  }
+}
+
+final counterState = CounterState(const MuEvent.data(0));
 ```
+
+In `main.dart`:
+
+```Dart
+Scaffold(
+	body: Center(
+		child: MuBuilder(
+			state: counterState,
+			builder: (context, event, child) {
+				if (event.loading) {
+					return const CircularProgressIndicator();
+				}
+				if (event.hasError) {
+					return Text('Error: ${event.error.toString()}');
+				}
+				return Text('${event.data}');
+			},
+		),
+	),
+),
+```
+
+Also see [Example](./example/).
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+I'd like to keep this packages minimal, but please create an issue if you have a
+suggestion.
+
+You can find me on Twitter @apptakk
