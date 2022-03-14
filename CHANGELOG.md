@@ -1,3 +1,5 @@
-## 0.0.1
+## 0.0.2
+* Split classes into separate files under lib/src
 
+## 0.0.1
 * Initial release
