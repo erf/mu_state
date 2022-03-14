@@ -22,7 +22,7 @@ Listen to a single state object using `MuBuilder`.
 
 Listen to multiple state objects using `MuMultiBuilder`, which notifies you with a list of `MuEvent` values.
 
-## Usage
+## Example
 
 In `load_state.dart`:
 
