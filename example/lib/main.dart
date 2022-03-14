@@ -38,20 +38,28 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            MuBuilder(
-              state: counterState,
-              builder: (context, event, child) {
-                if (event.loading) {
-                  return const CircularProgressIndicator();
-                }
-                if (event.hasError) {
-                  return Text('Error: ${event.error.toString()}');
-                }
-                return Text(
-                  '${event.data}',
-                  style: Theme.of(context).textTheme.headline4,
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: MuBuilder(
+                state: counterState,
+                builder: (context, event, child) {
+                  if (event.loading) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (event.hasError) {
+                    return Text(
+                      'Error: ${event.error.toString()}',
+                      style: const TextStyle(
+                        color: Colors.redAccent,
+                      ),
+                    );
+                  }
+                  return Text(
+                    '${event.data}',
+                    style: Theme.of(context).textTheme.headline4,
+                  );
+                },
+              ),
             ),
           ],
         ),
