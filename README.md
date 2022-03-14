@@ -8,7 +8,7 @@ A set of classes for handling state based on `ValueNotifier` and
 `ValueListenableBuilder`, but by wrapping state in a `MuEvent` object.
 
 - `MuEvent` - state event with `data`, `loading` and `error` properties
-- `MuState` - a `ValueNotifier` which holds a `MuEvent`
+- `MuState` - a `ValueNotifier` of type `MuEvent`
 - `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent`
 - `MuMultiBuilder` - listen to multiple `MuState` objects and get notified with a list of values 
 
