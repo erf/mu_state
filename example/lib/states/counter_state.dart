@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:mu_state/mu_state.dart';
 
 class CounterState extends MuState<int> {
-  CounterState(MuEvent<int> value) : super(value);
+  CounterState(MuEvent<int> initValue) : super(initValue);
 
   // Increment counter, but add a delay and random error.
   void increment() async {

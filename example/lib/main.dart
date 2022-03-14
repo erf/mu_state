@@ -1,6 +1,8 @@
-import 'package:example/counter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
+
+import 'states/counter_state.dart';
+import 'states/random_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,6 +59,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Text(
                     '${event.data}',
                     style: Theme.of(context).textTheme.headline4,
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: MuMultiBuilder(
+                states: [counterState, autoCounterState],
+                builder: (context, values, child) {
+                  return Column(
+                    children: [
+                      Text(
+                        'counter: ${values[0].data}',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      Text(
+                        'auto counter: ${values[1].data}',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ],
                   );
                 },
               ),
