@@ -10,20 +10,18 @@ A set of classes for handling state based on `ValueNotifier` and
 - `MuEvent` - state event with `data`, `loading` and `error` properties
 - `MuState` - a `ValueNotifier` which holds a `MuEvent`
 - `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent`
-- `MuMultiBuilder` - listen to multiple `MuState` objects and notify with values 
+- `MuMultiBuilder` - listen to multiple `MuState` objects and get notified with a list of values 
 
 ## Getting started
 
-Declare your state as a global final `MuState` variable and pass it an initial
-`MuEvent`. Give it a new `MuEvent` object as the state changes.
+Declare state as a global final `MuState` variable and pass it an initial
+`MuEvent`. Pass a new `MuEvent` object to `MuState.value` as the state changes.
 
-Implement your own state class which inherits from `MuState` for more complex
-state handling.
+Implement a custom state class which extends `MuState`, for more complex state handling.
 
 Listen to single state objects using `MuBuilder`.
 
-Listen to multiple state objects using `MuMultiBuilder`, which notifies you with
-a list of values.
+Listen to multiple state objects using `MuMultiBuilder`, which notifies you with a list of values.
 
 ## Usage
 
@@ -71,4 +69,5 @@ Also see [Example](./example/).
 I'd like to keep this packages minimal, but please create an issue if you have a
 suggestion.
 
-You can find me on Twitter @apptakk
+I'm on Twitter as @apptakk
+
