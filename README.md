@@ -24,7 +24,7 @@ Listen to multiple state objects using `MuMultiBuilder`, which notifies you with
 
 ## Usage
 
-In `counter_state.dart`:
+In `load_state.dart`:
 
 ```Dart
 import 'package:mu_state/mu_state.dart';
