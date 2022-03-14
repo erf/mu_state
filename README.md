@@ -45,20 +45,20 @@ In `main.dart`:
 
 ```Dart
 Scaffold(
-	body: Center(
-		child: MuBuilder(
-			state: counterState,
-			builder: (context, event, child) {
-				if (event.loading) {
-					return const CircularProgressIndicator();
-				}
-				if (event.hasError) {
-					return Text('Error: ${event.error.toString()}');
-				}
-				return Text('${event.data}');
-			},
-		),
-	),
+  body: Center(
+    child: MuBuilder(
+      state: counterState,
+      builder: (context, event, child) {
+        if (event.loading) {
+          return const CircularProgressIndicator();
+        }
+        if (event.hasError) {
+          return Text('Error: ${event.error.toString()}');
+        }
+        return Text('${event.data}');
+      },
+    ),
+  ),
 ),
 ```
 
