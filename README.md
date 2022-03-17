@@ -14,13 +14,15 @@ A set of classes for handling state based on `ValueNotifier` and `ValueListenabl
 ## Getting started
 
 Declare state as a global final `MuState` variable and pass it an initial
-`MuEvent`. Pass a new `MuEvent` object to `MuState.value` as the state changes.
+`MuEvent`. Add new `MuEvent` objects to `MuState.value` as state changes.
 
-Implement a custom state class which extends `MuState`, for more complex state handling.
+For more complex state handling, extends `MuState` and implement the necessary
+logic / methods.
 
-Listen to a single state object using `MuBuilder`.
+Listen to a single `MuState` object using `MuBuilder`.
 
-Listen to multiple state objects using `MuMultiBuilder`, which notifies you with a list of `MuEvent` values.
+Listen to multiple `MuState` objects using `MuMultiBuilder`, which notifies you
+with a list of `MuEvent` values on every state change.
 
 ## Example
 
