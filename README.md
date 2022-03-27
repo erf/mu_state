@@ -26,13 +26,13 @@ with a list of `MuEvent` values on every state change.
 
 ## Example
 
-In `load_state.dart`:
+In `test_state.dart`:
 
 ```Dart
 import 'package:mu_state/mu_state.dart';
 
-class LoadState extends MuState<String> {
-  LoadState(MuEvent<String> value) : super(value);
+class TestState extends MuState<String> {
+  TestState(MuEvent<String> value) : super(value);
 
   void load() async {
     value = const MuEvent.loading();
@@ -41,7 +41,7 @@ class LoadState extends MuState<String> {
   }
 }
 
-final loadState = LoadState(const MuEvent.data('initial'));
+final testState = TestState(const MuEvent.data('initial'));
 ```
 
 In `main.dart`:
@@ -50,7 +50,7 @@ In `main.dart`:
 Scaffold(
   body: Center(
     child: MuBuilder<String>(
-      state: loadState,
+      state: testState,
       builder: (context, event, child) {
         if (event.loading) {
           return const CircularProgressIndicator();
