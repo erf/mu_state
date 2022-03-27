@@ -3,28 +3,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mu_state/mu_state.dart';
 
 void main() {
-  test('create MuState with MuEvent.loading', () {
-    final muState = MuState<int>(const MuEvent.loading());
-    expect(muState.value.loading, true);
-  });
-
-  test('create MuState with MuEvent.loading and data is null', () {
-    final muState = MuState<int>(const MuEvent.loading());
-    expect(muState.value.data, null);
-  });
-
-  test('create MuState with MuEvent.loading and error is null', () {
-    final muState = MuState<int>(const MuEvent.loading());
-    expect(muState.value.error, null);
-  });
-
-  test('create MuState with MuEvent.loading(false)', () {
-    final muState = MuState<int>(const MuEvent.loading(false));
+  test('create MuState with MuEvent.data and other states', () {
+    final muState = MuState(const MuEvent.data('Data'));
+    expect(muState.value.data, 'Data');
+    expect(muState.value.hasData, true);
     expect(muState.value.loading, false);
+    expect(muState.value.hasError, false);
   });
 
-  test('create MuState with MuEvent.error', () {
-    final muState = MuState<int>(MuEvent.error(AssertionError('Error')));
+  test('create MuEvent.loading and check loading is true and other states', () {
+    final muState = MuState(const MuEvent.loading());
+    expect(muState.value.loading, true);
+    expect(muState.value.hasData, false);
+    expect(muState.value.hasError, false);
+  });
+
+  test('create MuEvent.error and assert it has error and other states', () {
+    final muState = MuState(MuEvent.error(AssertionError('Error')));
     expect(muState.value.error, isA<AssertionError>());
+    expect(muState.value.hasError, true);
+    expect(muState.value.hasData, false);
+    expect(muState.value.loading, false);
   });
 }
