@@ -67,4 +67,21 @@ void main() {
 
     expect(find.text('Data'), findsOneWidget);
   });
+
+  testWidgets('Change from one state to another', (WidgetTester tester) async {
+    final state = TestState(const MuEvent.loading());
+    await tester.pumpWidget(TestWidget(state: state));
+    expect(state.value.loading, true);
+    expect(find.text('Loading'), findsOneWidget);
+
+    state.value = const MuEvent.data('Some data');
+    await tester.pump();
+    expect(state.value.hasData, true);
+    expect(find.text('Data'), findsOneWidget);
+
+    state.value = const MuEvent.error('Some error');
+    await tester.pump();
+    expect(state.value.hasError, true);
+    expect(find.text('Error'), findsOneWidget);
+  });
 }
