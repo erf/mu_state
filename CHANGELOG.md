@@ -1,6 +1,6 @@
 ## 0.0.4
 * replace AnimatedBuilder -> ListenableBuilder
-* 
+* Set min SDK version to 3.0.0 and Flutter to 3.10.0
 
 ## 0.0.3+1
 * Add widget tests and improve unit tests
