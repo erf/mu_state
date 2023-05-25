@@ -1,11 +1,11 @@
 name: mu_state
 description: A set of helpers for pragmatic state handling as mentioned in my Medium article.
-version: 0.0.3+1
+version: 0.0.4
 homepage: https://github.com/erf/mu_state
 
 environment:
-  sdk: ">=2.16.1 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:

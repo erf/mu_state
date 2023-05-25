@@ -1,3 +1,7 @@
+## 0.0.4
+* replace AnimatedBuilder -> ListenableBuilder
+* 
+
 ## 0.0.3+1
 * Add widget tests and improve unit tests
 * Improve example in README
