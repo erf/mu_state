@@ -1,13 +1,13 @@
 /// [MuEvent] wraps a state [T] with an optional [loading] and [error] status.
 class MuEvent<T> {
   final T? data;
-  final bool loading;
   final Object? error;
+  final bool loading;
 
   const MuEvent({
     this.data,
-    this.loading = false,
     this.error,
+    this.loading = false,
   });
 
   /// Initializes a [MuEvent] with [data].

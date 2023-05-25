@@ -30,8 +30,8 @@ class MuMultiBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: Listenable.merge(states),
+    return ListenableBuilder(
+      listenable: Listenable.merge(states),
       builder: (BuildContext context, Widget? child) {
         return builder(
           context,
