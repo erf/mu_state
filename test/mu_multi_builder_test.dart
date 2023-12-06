@@ -5,7 +5,7 @@ import 'package:mu_state/mu_state.dart';
 class TestWidget extends StatelessWidget {
   final List<MuState> states;
 
-  const TestWidget({Key? key, required this.states}) : super(key: key);
+  const TestWidget({super.key, required this.states});
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +43,11 @@ class TestWidget extends StatelessWidget {
 }
 
 class TestStateOne extends MuState<String> {
-  TestStateOne(MuEvent<String> value) : super(value);
+  TestStateOne(super.value);
 }
 
 class TestStateTwo extends MuState<String> {
-  TestStateTwo(MuEvent<String> value) : super(value);
+  TestStateTwo(super.value);
 }
 
 void main() {

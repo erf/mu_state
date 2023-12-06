@@ -17,7 +17,7 @@ class MuMultiBuilder extends StatelessWidget {
   final Widget? child;
 
   const MuMultiBuilder({
-    Key? key,
+    super.key,
 
     /// List of [MuState]s to listen to.
     required this.states,
@@ -25,8 +25,7 @@ class MuMultiBuilder extends StatelessWidget {
     /// The builder function is called when the value of any of the [states] changes.
     required this.builder,
     this.child,
-  })  : assert(states.length != 0),
-        super(key: key);
+  }) : assert(states.length != 0);
 
   @override
   Widget build(BuildContext context) {

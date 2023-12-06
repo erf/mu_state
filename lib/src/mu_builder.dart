@@ -6,12 +6,12 @@ import 'mu_event.dart';
 /// [MuBuilder] is a specialization of [ValueListenableBuilder] with type [MuEvent].
 class MuBuilder<T> extends ValueListenableBuilder<MuEvent<T>> {
   const MuBuilder({
-    Key? key,
+    super.key,
 
     /// The [state] to listen to.
     required ValueListenable<MuEvent<T>> state,
 
     /// The builder function to call when the [state] changes.
-    required ValueWidgetBuilder<MuEvent<T>> builder,
-  }) : super(key: key, valueListenable: state, builder: builder);
+    required super.builder,
+  }) : super(valueListenable: state);
 }
