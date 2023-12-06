@@ -1,3 +1,9 @@
+## 0.1.0
+* user super in constructors
+* update lints -> 3.0.1
+* sdk env 2.18.0 < 4.0.0
+* add vscode example launcher
+
 ## 0.0.4
 * replace AnimatedBuilder -> ListenableBuilder
 * Set min SDK version to 3.0.0 and Flutter to 3.10.0
