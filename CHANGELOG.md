@@ -1,3 +1,6 @@
+## 0.1.0+1
+* update CHANGELOG
+
 ## 0.1.0
 * user super in constructors
 * update lints -> 3.0.1
