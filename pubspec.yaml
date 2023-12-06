@@ -1,11 +1,10 @@
 name: mu_state
 description: A set of helpers for pragmatic state handling as mentioned in my Medium article.
-version: 0.0.4
+version: 0.1.0
 homepage: https://github.com/erf/mu_state
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
-  flutter: ">=3.10.0"
+  sdk: ">=2.18.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -14,7 +13,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
