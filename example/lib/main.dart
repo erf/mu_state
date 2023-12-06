@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                   return Text(
                     '${event.data}',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   );
                 },
               ),
@@ -73,15 +73,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       Text(
                         'counter: ${values[0].data}',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
                         'auto counter: ${values[1].data}',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
                         'load state: ${values[2].loading ? 'loading' : values[2].data}',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ],
                   );
