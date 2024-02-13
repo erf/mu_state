@@ -1,7 +1,7 @@
 import 'package:mu_state/mu_state.dart';
 
 class LoadState extends MuState {
-  LoadState(MuEvent value) : super(value);
+  LoadState(super.value);
 
   void load() async {
     value = const MuEventLoading();
