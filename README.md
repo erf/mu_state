@@ -1,28 +1,30 @@
 # mu_state
 
-A set of helpers for **pragmatic state handling in Flutter** as mentioned in my [Medium article ](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2).
+A minimal state solution based on my **Pragmatic state handling in Flutter** [Medium article ](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2).
 
 ## Features
 
-A set of classes for handling state based on `ValueNotifier` and `ValueListenableBuilder`, where state is wrapped in a `MuEvent` object:
+A set of classes built on `ValueNotifier` and `ValueListenableBuilder`. 
 
-- `MuEvent` - state event with `data`, `loading` and `error` fields
+- `MuEvent` - the base class for our 3 state object
+- `MuEventData` - the data state
+- `MuEventError` - the error state
+- `MuEventLoading` - the loading state
 - `MuState` - a `ValueNotifier` of type `MuEvent`
 - `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent`
-- `MuMultiBuilder` - listen to multiple `MuState` objects and get notified with a list of `MuEvent` values 
+- `MuMultiBuilder` - listen to a list of `MuState`'s and get notified with a list of `MuEvent`'s 
 
-## Getting started
+## How To
 
-Declare state as a global final `MuState` variable and pass it an initial
-`MuEvent`. Add new `MuEvent` objects to `MuState.value` as state changes.
+Declare state as a global final `MuState` variable and pass it an initial `MuEvent`
+type, e.g. a `MuEventLoading` or a `MuEventData`.
 
-For more complex state handling, extends `MuState` and implement the necessary
-logic / methods.
+Alternatively extend `MuState` and implement the necessary methods.
 
-Listen to a single `MuState` object using `MuBuilder`.
+Listen to `MuState` changes using `MuBuilder`.
 
-Listen to multiple `MuState` objects using `MuMultiBuilder`, which notifies you
-with a list of `MuEvent` values on every state change.
+Listen to multiple `MuState` objects using `MuMultiBuilder` and handle the list 
+of `MuEvent`'s on changes.
 
 ## Example
 
@@ -31,17 +33,15 @@ In `test_state.dart`:
 ```Dart
 import 'package:mu_state/mu_state.dart';
 
-class TestState extends MuState<String> {
-  TestState(MuEvent<String> value) : super(value);
+class CounterState extends MuState {
+  CounterState(MuEvent initValue) : super(initValue);
 
-  void load() async {
-    value = const MuEvent.loading();
-    await Future.delayed(const Duration(milliseconds: 500));
-    value = const MuEvent.data('done');
+  void increment() {
+    value = MuEventData((value as MuEventData<int>).data + 1);
   }
 }
 
-final testState = TestState(const MuEvent.data('initial'));
+final counterState = CounterState(const MuEventData<int>(0));
 ```
 
 In `main.dart`:
@@ -49,16 +49,14 @@ In `main.dart`:
 ```Dart
 Scaffold(
   body: Center(
-    child: MuBuilder<String>(
-      state: testState,
+    child: MuBuilder(
+      state: counterState,
       builder: (context, event, child) {
-        if (event.loading) {
-          return const CircularProgressIndicator();
-        }
-        if (event.hasError) {
-          return Text('Error: ${event.error.toString()}');
-        }
-        return Text('${event.data}');
+        return switch (event) {
+          MuEventLoading _ => const CircularProgressIndicator(),
+          MuEventError ev => Text('Error: ${ev.error}'),
+          MuEventData ev => Text('${ev.data}')
+        };
       },
     ),
   ),
@@ -66,11 +64,3 @@ Scaffold(
 ```
 
 Also see [Example](./example/).
-
-## Additional information
-
-I'd like to keep this packages minimal, but please create an issue if you have a
-suggestion.
-
-I'm on Twitter as @apptakk
-
