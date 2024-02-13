@@ -6,7 +6,7 @@ void main() {
   test('create MuState with MuEvent.data and other states', () {
     final state = MuState(const MuEventData('data'));
     return switch (state.value) {
-      MuEventData(value: var data) => expect(data, 'data'),
+      MuEventData(data: var data) => expect(data, 'data'),
       _ => fail('Invalid state'),
     };
   });
@@ -20,9 +20,9 @@ void main() {
   });
 
   test('create MuEvent.loading and check loading is true and other states', () {
-    final state = MuState(const MuEventLoad());
+    final state = MuState(const MuEventLoading());
     return switch (state.value) {
-      MuEventLoad ev => expect(ev, isA<MuEventLoad>()),
+      MuEventLoading ev => expect(ev, isA<MuEventLoading>()),
       _ => fail('Invalid state'),
     };
   });

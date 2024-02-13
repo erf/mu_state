@@ -16,7 +16,7 @@ class TestWidget extends StatelessWidget {
           builder: (context, event, child) {
             return Center(
               child: switch (event) {
-                MuEventLoad _ => const Text('Loading'),
+                MuEventLoading _ => const Text('Loading'),
                 MuEventError _ => const Text('Error'),
                 MuEventData _ => const Text('Data'),
               },
@@ -34,7 +34,7 @@ class TestState extends MuState {
 
 void main() {
   testWidgets('TestWidget text is "Loading"', (WidgetTester tester) async {
-    await tester.pumpWidget(TestWidget(TestState(const MuEventLoad())));
+    await tester.pumpWidget(TestWidget(TestState(const MuEventLoading())));
     expect(find.text('Loading'), findsOneWidget);
   });
 
@@ -49,9 +49,9 @@ void main() {
   });
 
   testWidgets('Change from one state to another', (WidgetTester tester) async {
-    final state = TestState(const MuEventLoad());
+    final state = TestState(const MuEventLoading());
     await tester.pumpWidget(TestWidget(state));
-    expect(state.value, isA<MuEventLoad>());
+    expect(state.value, isA<MuEventLoading>());
     expect(find.text('Loading'), findsOneWidget);
 
     state.value = const MuEventData('');

@@ -4,7 +4,7 @@ class LoadState extends MuState {
   LoadState(MuEvent value) : super(value);
 
   void load() async {
-    value = const MuEventLoad();
+    value = const MuEventLoading();
     await Future.delayed(const Duration(milliseconds: 500));
     value = const MuEventData('done');
   }

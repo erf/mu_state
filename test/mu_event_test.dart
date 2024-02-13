@@ -5,7 +5,7 @@ import 'package:mu_state/src/mu_event.dart';
 void main() {
   test('test MuEventData', () {
     const event = MuEventData('Data');
-    expect(event.value, 'Data');
+    expect(event.data, 'Data');
   });
 
   test('test MuEventError', () {

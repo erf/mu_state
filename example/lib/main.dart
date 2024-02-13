@@ -47,9 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 state: counterState,
                 builder: (context, MuEvent event, child) {
                   return switch (event) {
-                    MuEventLoad _ => const CircularProgressIndicator(),
+                    MuEventLoading _ => const CircularProgressIndicator(),
                     MuEventError ev => Text('Error: ${ev.error}'),
-                    MuEventData ev => Text('${ev.value}')
+                    MuEventData ev => Text('${ev.data}')
                   };
                 },
               ),
@@ -65,25 +65,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       Text(
                         'counter: ${switch (counter) {
-                          MuEventLoad _ => 'load',
+                          MuEventLoading _ => 'load',
                           MuEventError ev => 'error: ${ev.error}',
-                          MuEventData<int> ev => ev.value,
+                          MuEventData<int> ev => ev.data,
                           _ => '',
                         }}',
                       ),
                       Text(
                         'auto counter: ${switch (autoCounter) {
-                          MuEventLoad _ => 'loading',
+                          MuEventLoading _ => 'loading',
                           MuEventError ev => 'error: ${ev.error}',
-                          MuEventData<int> ev => ev.value,
+                          MuEventData<int> ev => ev.data,
                           _ => '',
                         }}',
                       ),
                       Text(
                         'load state: ${switch (load) {
-                          MuEventLoad _ => 'loading',
+                          MuEventLoading _ => 'loading',
                           MuEventError ev => 'error: ${ev.error}',
-                          MuEventData<String> ev => ev.value,
+                          MuEventData<String> ev => ev.data,
                           _ => '',
                         }}',
                       ),

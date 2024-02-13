@@ -15,11 +15,11 @@ class TestWidget extends StatelessWidget {
           states: states,
           builder: (context, List<MuEvent> events, child) {
             return switch (events) {
-              [MuEventLoad _, MuEventLoad _] =>
+              [MuEventLoading _, MuEventLoading _] =>
                 const Center(child: Text('Loading')),
-              [MuEventError _, MuEventError _] =>
+              [MuEventError(error: _), MuEventError(error: _)] =>
                 const Center(child: Text('Error')),
-              [MuEventData(value: _), MuEventData(value: _)] =>
+              [MuEventData(data: _), MuEventData(data: _)] =>
                 const Center(child: Text('Data')),
               _ => const Center(child: Text('Invalid state')),
             };
@@ -42,8 +42,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Loading',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEventLoad()),
-      TestStateTwo(const MuEventLoad()),
+      TestStateOne(const MuEventLoading()),
+      TestStateTwo(const MuEventLoading()),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 
