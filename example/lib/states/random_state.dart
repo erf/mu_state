@@ -1,13 +1,14 @@
 import 'dart:async';
 
+//import 'package:mu_state/mu_state.dart';
 import 'package:mu_state/mu_state.dart';
 
-class AutoCounterState extends MuState<int> {
-  AutoCounterState(MuEvent<int> initValue) : super(initValue) {
+class AutoCounterState extends MuState {
+  AutoCounterState(MuEventData<int> initValue) : super(initValue) {
     Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      value = MuEvent.data(value.data! + 1);
+      value = MuEventData((value as MuEventData<int>).value + 1);
     });
   }
 }
 
-final autoCounterState = AutoCounterState(const MuEvent.data(0));
+final autoCounterState = AutoCounterState(const MuEventData(0));

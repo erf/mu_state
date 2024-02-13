@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'mu_event.dart';
 import 'mu_state.dart';
 
-/// Listen to multiple [MuState]s and get notified with a list of values.
+/// Listen to a list of [MuState] objects and get notified on any change.
 class MuMultiBuilder extends StatelessWidget {
   /// List of [MuState]s to listen to.
   final List<MuState> states;
 
-  /// The builder function is called when the value of any of the [states] changes.
-  /// The order of the values will be same as the [states] list.
+  /// The builder is called when the value of any of the [states] changes and is
+  /// passed the [BuildContext] and the list of [MuEvent]s.
   final Widget Function(
       BuildContext context, List<MuEvent> values, Widget? child) builder;
 
@@ -32,11 +32,8 @@ class MuMultiBuilder extends StatelessWidget {
     return ListenableBuilder(
       listenable: Listenable.merge(states),
       builder: (BuildContext context, Widget? child) {
-        return builder(
-          context,
-          states.map((listenable) => listenable.value).toList(growable: false),
-          child,
-        );
+        return builder(context,
+            states.map((listenable) => listenable.value).toList(), child);
       },
       child: child,
     );

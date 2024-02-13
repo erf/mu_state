@@ -13,28 +13,16 @@ class TestWidget extends StatelessWidget {
       home: Scaffold(
         body: MuMultiBuilder(
           states: states,
-          builder: (context, List<MuEvent<dynamic>> events, child) {
-            final event0 = events[0];
-            final event1 = events[1];
-
-            if (event0.loading || event1.loading) {
-              return const Center(
-                child: Text('Loading'),
-              );
-            }
-            if (event0.hasError || event1.hasError) {
-              return const Center(
-                child: Text('Error'),
-              );
-            }
-            if (event0.hasData || event1.hasData) {
-              return const Center(
-                child: Text('Data'),
-              );
-            }
-            return const Center(
-              child: Text('Invalid state'),
-            );
+          builder: (context, List<MuEvent> events, child) {
+            return switch (events) {
+              [MuEventLoad _, MuEventLoad _] =>
+                const Center(child: Text('Loading')),
+              [MuEventError _, MuEventError _] =>
+                const Center(child: Text('Error')),
+              [MuEventData(value: _), MuEventData(value: _)] =>
+                const Center(child: Text('Data')),
+              _ => const Center(child: Text('Invalid state')),
+            };
           },
         ),
       ),
@@ -42,11 +30,11 @@ class TestWidget extends StatelessWidget {
   }
 }
 
-class TestStateOne extends MuState<String> {
+class TestStateOne extends MuState {
   TestStateOne(super.value);
 }
 
-class TestStateTwo extends MuState<String> {
+class TestStateTwo extends MuState {
   TestStateTwo(super.value);
 }
 
@@ -54,8 +42,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Loading',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEvent.loading()),
-      TestStateTwo(const MuEvent.loading()),
+      TestStateOne(const MuEventLoad()),
+      TestStateTwo(const MuEventLoad()),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 
@@ -65,8 +53,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Error',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEvent.error('Error 1')),
-      TestStateTwo(const MuEvent.error('Error 2')),
+      TestStateOne(const MuEventError('Error 1')),
+      TestStateTwo(const MuEventError('Error 2')),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 
@@ -76,8 +64,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Data',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEvent.data('Data 1')),
-      TestStateTwo(const MuEvent.data('Data 2')),
+      TestStateOne(const MuEventData('Data 1')),
+      TestStateTwo(const MuEventData('Data 2')),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 

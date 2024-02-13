@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
 
-import 'states/async_counter_state.dart';
+import 'states/counter_state.dart';
 import 'states/load_state.dart';
 import 'states/random_state.dart';
 
@@ -45,22 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(16),
               child: MuBuilder(
                 state: counterState,
-                builder: (context, event, child) {
-                  if (event.loading) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (event.hasError) {
-                    return Text(
-                      'Error: ${event.error.toString()}',
-                      style: const TextStyle(
-                        color: Colors.redAccent,
-                      ),
-                    );
-                  }
-                  return Text(
-                    '${event.data}',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  );
+                builder: (context, MuEvent event, child) {
+                  return switch (event) {
+                    MuEventLoad _ => const CircularProgressIndicator(),
+                    MuEventError ev => Text('Error: ${ev.error}'),
+                    MuEventData ev => Text('${ev.value}')
+                  };
                 },
               ),
             ),
@@ -69,19 +59,33 @@ class _MyHomePageState extends State<MyHomePage> {
               child: MuMultiBuilder(
                 states: [counterState, autoCounterState, loadState],
                 builder: (context, values, child) {
+                  var [counter, autoCounter, load] = values;
+
                   return Column(
                     children: [
                       Text(
-                        'counter: ${values[0].data}',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        'counter: ${switch (counter) {
+                          MuEventLoad _ => 'load',
+                          MuEventError ev => 'error: ${ev.error}',
+                          MuEventData<int> ev => ev.value,
+                          _ => '',
+                        }}',
                       ),
                       Text(
-                        'auto counter: ${values[1].data}',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        'auto counter: ${switch (autoCounter) {
+                          MuEventLoad _ => 'loading',
+                          MuEventError ev => 'error: ${ev.error}',
+                          MuEventData<int> ev => ev.value,
+                          _ => '',
+                        }}',
                       ),
                       Text(
-                        'load state: ${values[2].loading ? 'loading' : values[2].data}',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        'load state: ${switch (load) {
+                          MuEventLoad _ => 'loading',
+                          MuEventError ev => 'error: ${ev.error}',
+                          MuEventData<String> ev => ev.value,
+                          _ => '',
+                        }}',
                       ),
                     ],
                   );

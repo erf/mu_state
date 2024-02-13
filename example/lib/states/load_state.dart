@@ -1,13 +1,13 @@
 import 'package:mu_state/mu_state.dart';
 
-class LoadState extends MuState<String> {
-  LoadState(MuEvent<String> value) : super(value);
+class LoadState extends MuState {
+  LoadState(MuEvent value) : super(value);
 
   void load() async {
-    value = const MuEvent.loading();
+    value = const MuEventLoad();
     await Future.delayed(const Duration(milliseconds: 500));
-    value = const MuEvent.data('done');
+    value = const MuEventData('done');
   }
 }
 
-final loadState = LoadState(const MuEvent.data('initial'));
+final loadState = LoadState(const MuEventData('initial'));
