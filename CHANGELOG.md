@@ -1,3 +1,6 @@
+## 0.3.0
+* use explicit type for MuEvent
+
 ## 0.2.0
 * replace complex mu_event type with 4 sealed types (BREAKING)
 * use switch expression / patterns to handle mu_event types
