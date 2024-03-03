@@ -1,6 +1,6 @@
 import 'package:mu_state/mu_state.dart';
 
-class CounterState extends MuState {
+class CounterState extends MuState<int> {
   CounterState(super.initValue);
 
   void increment() {
@@ -8,4 +8,4 @@ class CounterState extends MuState {
   }
 }
 
-final counterState = CounterState(const MuEventData<int>(0));
+final counterState = CounterState(const MuEventData(0));

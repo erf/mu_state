@@ -6,18 +6,18 @@ A minimal state solution based on my **Pragmatic state handling in Flutter** [Me
 
 A set of classes built on `ValueNotifier` and `ValueListenableBuilder`. 
 
-- `MuEvent` - the base class for our 3 state object
-- `MuEventData` - the data state
-- `MuEventError` - the error state
-- `MuEventLoading` - the loading state
-- `MuState` - a `ValueNotifier` of type `MuEvent`
-- `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent`
+- `MuEvent<T>` - the base class for our 3 state object
+- `MuEventData<T>` - the data state of type `T`
+- `MuEventError<T>` - the error state of type `T`
+- `MuEventLoading<T>` - the loading state of type `T`
+- `MuState<T>` - a `ValueNotifier` of type `MuEvent<T>`
+- `MuBuilder<T>` - a `ValueListenableBuilder` of type `MuEvent<T>`
 - `MuMultiBuilder` - listen to a list of `MuState`'s and get notified with a list of `MuEvent`'s 
 
 ## How To
 
-Declare state as a global final `MuState` variable and pass it an initial `MuEvent`
-type, e.g. a `MuEventLoading` or a `MuEventData`.
+Declare state as a global final `MuState<T>` variable and pass it an initial `MuEvent`
+type, e.g. a `MuEventLoading` or a `MuEventData<T>`.
 
 Alternatively extend `MuState` and implement the necessary methods.
 
@@ -33,7 +33,7 @@ In `test_state.dart`:
 ```Dart
 import 'package:mu_state/mu_state.dart';
 
-class CounterState extends MuState {
+class CounterState extends MuState<int> {
   CounterState(MuEvent initValue) : super(initValue);
 
   void increment() {
@@ -41,7 +41,7 @@ class CounterState extends MuState {
   }
 }
 
-final counterState = CounterState(const MuEventData<int>(0));
+final counterState = CounterState(const MuEventData(0));
 ```
 
 In `main.dart`:
@@ -53,9 +53,9 @@ Scaffold(
       state: counterState,
       builder: (context, event, child) {
         return switch (event) {
-          MuEventLoading _ => const CircularProgressIndicator(),
-          MuEventError ev => Text('Error: ${ev.error}'),
-          MuEventData ev => Text('${ev.data}')
+          MuEventLoading() => const CircularProgressIndicator(),
+          MuEventError(error: Object error) => Text('Error: $error'),
+          MuEventData(data: int value) => Text('$value')
         };
       },
     ),

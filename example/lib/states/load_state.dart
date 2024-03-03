@@ -1,6 +1,6 @@
 import 'package:mu_state/mu_state.dart';
 
-class LoadState extends MuState {
+class LoadState extends MuState<String> {
   LoadState(super.value);
 
   void load() async {

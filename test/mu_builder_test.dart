@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mu_state/mu_state.dart';
 
 class TestWidget extends StatelessWidget {
-  final MuState state;
+  final MuState<String> state;
 
   const TestWidget(this.state, {super.key});
 
@@ -16,9 +16,9 @@ class TestWidget extends StatelessWidget {
           builder: (context, event, child) {
             return Center(
               child: switch (event) {
-                MuEventLoading _ => const Text('Loading'),
-                MuEventError _ => const Text('Error'),
-                MuEventData _ => const Text('Data'),
+                MuEventLoading() => const Text('Loading'),
+                MuEventError(error: Object error) => Text('Error: $error'),
+                MuEventData(data: String data) => Text('Data: $data'),
               },
             );
           },
@@ -28,7 +28,7 @@ class TestWidget extends StatelessWidget {
   }
 }
 
-class TestState extends MuState {
+class TestState extends MuState<String> {
   TestState(super.value);
 }
 
@@ -39,13 +39,13 @@ void main() {
   });
 
   testWidgets('TestWidget text is "Error"', (WidgetTester tester) async {
-    await tester.pumpWidget(TestWidget(TestState(const MuEventError(''))));
-    expect(find.text('Error'), findsOneWidget);
+    await tester.pumpWidget(TestWidget(TestState(const MuEventError('error'))));
+    expect(find.text('Error: error'), findsOneWidget);
   });
 
   testWidgets('TestWidget text is "Data"', (WidgetTester tester) async {
-    await tester.pumpWidget(TestWidget(TestState(const MuEventData(''))));
-    expect(find.text('Data'), findsOneWidget);
+    await tester.pumpWidget(TestWidget(TestState(const MuEventData('data'))));
+    expect(find.text('Data: data'), findsOneWidget);
   });
 
   testWidgets('Change from one state to another', (WidgetTester tester) async {
@@ -54,14 +54,14 @@ void main() {
     expect(state.value, isA<MuEventLoading>());
     expect(find.text('Loading'), findsOneWidget);
 
-    state.value = const MuEventData('');
+    state.value = const MuEventData('data');
     await tester.pump();
     expect(state.value is MuEventData, true);
-    expect(find.text('Data'), findsOneWidget);
+    expect(find.text('Data: data'), findsOneWidget);
 
-    state.value = const MuEventError('');
+    state.value = const MuEventError('error');
     await tester.pump();
     expect(state.value is MuEventError, true);
-    expect(find.text('Error'), findsOneWidget);
+    expect(find.text('Error: error'), findsOneWidget);
   });
 }

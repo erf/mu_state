@@ -3,7 +3,7 @@ import 'package:mu_state/mu_state.dart';
 
 import 'states/counter_state.dart';
 import 'states/load_state.dart';
-import 'states/random_state.dart';
+import 'states/auto_counter_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,11 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(16),
               child: MuBuilder(
                 state: counterState,
-                builder: (context, MuEvent event, child) {
+                builder: (context, event, child) {
                   return switch (event) {
-                    MuEventLoading _ => const CircularProgressIndicator(),
-                    MuEventError ev => Text('Error: ${ev.error}'),
-                    MuEventData ev => Text('${ev.data}')
+                    MuEventLoading() => const CircularProgressIndicator(),
+                    MuEventError(error: Object error) => Text('Error: $error'),
+                    MuEventData(data: int data) => Text('$data')
                   };
                 },
               ),
@@ -59,32 +59,28 @@ class _MyHomePageState extends State<MyHomePage> {
               child: MuMultiBuilder(
                 states: [counterState, autoCounterState, loadState],
                 builder: (context, values, child) {
-                  var [counter, autoCounter, load] = values;
-
                   return Column(
                     children: [
                       Text(
-                        'counter: ${switch (counter) {
-                          MuEventLoading _ => 'load',
-                          MuEventError ev => 'error: ${ev.error}',
-                          MuEventData<int> ev => ev.data,
+                        'counter: ${switch (counterState.value) {
+                          MuEventLoading() => 'load',
+                          MuEventError(error: Object error) => 'error: $error',
+                          MuEventData(data: int value) => value,
+                        }}',
+                      ),
+                      Text(
+                        'auto counter: ${switch (autoCounterState.value) {
+                          MuEventLoading() => 'loading',
+                          MuEventError(error: Object error) => 'error: $error',
+                          MuEventData(data: int value) => value,
                           _ => '',
                         }}',
                       ),
                       Text(
-                        'auto counter: ${switch (autoCounter) {
-                          MuEventLoading _ => 'loading',
-                          MuEventError ev => 'error: ${ev.error}',
-                          MuEventData<int> ev => ev.data,
-                          _ => '',
-                        }}',
-                      ),
-                      Text(
-                        'load state: ${switch (load) {
-                          MuEventLoading _ => 'loading',
-                          MuEventError ev => 'error: ${ev.error}',
-                          MuEventData<String> ev => ev.data,
-                          _ => '',
+                        'load state: ${switch (loadState.value) {
+                          MuEventLoading() => 'loading',
+                          MuEventError(error: Object error) => 'error: $error',
+                          MuEventData(data: String message) => message,
                         }}',
                       ),
                     ],
