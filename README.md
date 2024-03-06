@@ -8,12 +8,12 @@ A minimal state solution based on my **Pragmatic state handling in Flutter**
 A set of classes built on `ValueNotifier` and `ValueListenableBuilder` for 
 handling state in Flutter.
 
+- `MuState` - a `ValueNotifier` of type `MuEvent<T>`
+- `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent<T>`
 - `MuEvent<T>` - the base class for our 3 state object
   - `MuEventData<T>` - the data state of type `T`
   - `MuEventError` - the error state
   - `MuEventLoading` - the loading state
-- `MuState` - a `ValueNotifier` of type `MuEvent<T>`
-- `MuBuilder` - a `ValueListenableBuilder` of type `MuEvent<T>`
 - `MuMultiBuilder` - listen to changes in a list of `MuState` objects
 
 ## How To
