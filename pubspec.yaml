@@ -1,6 +1,6 @@
 name: mu_state
 description: A set of helpers for pragmatic state handling as mentioned in my Medium article.
-version: 0.3.0+2
+version: 0.3.0+3
 homepage: https://github.com/erf/mu_state
 
 environment:
