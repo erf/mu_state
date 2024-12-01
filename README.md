@@ -8,33 +8,33 @@ A minimal state solution based on my **Pragmatic state handling in Flutter**
 A set of classes built on `ValueNotifier` and `ValueListenableBuilder` for
 handling state in Flutter.
 
-- `MuLogic` - an alias for `ValueNotifier` where you can optionally use a `MuState<T>` type
+- `MuState` - an alias for `ValueNotifier` where you can optionally use a `MuEvent<T>` type
 - `MuBuilder` - an alias for `ValueListenableBuilder`
-- `MuEvent<T>` - the base class for 3 state object which can be used in a `MuState<T>`:
-  - `MuEventData<T>` - the data state of type `T`
-  - `MuEventError` - the error state
-  - `MuEventLoading` - the loading state
+- `MuEvent<T>` - the base class for 3 state objects which can be used in a `MuState<T>`:
+  - `MuDataEvent<T>` - the data state of type `T`
+  - `MuErrorEvent` - the error state
+  - `MuLoadingEvent` - the loading state
 - `MuMultiBuilder` - listen to changes of a list of `Listenable` objects
 
 ## How To
 
-Contain state by inheriting from `MuLogic` or using it directly. This can have any type.
+Contain state by inheriting from `MuState` or using it directly. This can have any type.
 
-You can use an optional `MuEvent` type `MuLoading`, `MuError` or `MuData` to contain the state.
+You can optionally use `MuEvent` types: `MuLoading`, `MuError` or `MuData` to contain state.
 
-Listen to `MuLogic` changes using `MuBuilder`.
+Listen to `MuState` changes using `MuBuilder`.
 
-Listen to multiple `MuLogic` objects using `MuMultiBuilder`.
+Listen to multiple `MuState` objects using `MuMultiBuilder`.
 
 ## Example
 
-In `test_state.dart`:
+A simple counter state:
 
 ```Dart
 import 'package:mu_state/mu_state.dart';
 
-class CounterLogic extends MuState<int> {
-  CounterLogic(super.initValue);
+class CounterState extends MuState<int> {
+  CounterState(super.initValue);
 
   void increment() {
     value = value + 1;
@@ -53,6 +53,41 @@ Scaffold(
       state: counterState,
       builder: (context, event, child) {
         return Text('$value');
+      },
+    ),
+  ),
+),
+```
+
+A state with loading and error handling:
+
+```Dart
+class LoadState extends MuState<MuEvent<String>> {
+  LoadState(super.value);
+
+  void load() async {
+    value = const MuLoadingEvent();
+    await Future.delayed(const Duration(milliseconds: 500));
+    value = const MuDataEvent('done');
+  }
+}
+
+final loadState = LoadState(const MuDataEvent('initial'));
+```
+
+Handle loading and error states:
+
+```Dart
+Scaffold(
+  body: Center(
+    child: MuBuilder(
+      state: loadState,
+      builder: (context, event, child) {
+        return switch (event) {
+          MuLoadingEvent() => const CircularProgressIndicator(),
+          MuErrorEvent() => Text('Error: ${event.error}'),
+          MuDataEvent() => Text('Data: ${event.data}'),
+        };
       },
     ),
   ),

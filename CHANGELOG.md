@@ -1,3 +1,10 @@
+## 0.5.0
+
+- let's keep the old names to avoid breaking changes (except for events!)
+- note `MuState` is just an alias for `ValueNotifier` and can take any type
+- note `MuBuilder` is just an alias for `ValueListenableBuilder`
+- note `MuEvent` is optional
+
 ## 0.4.0
 
 - renamed `MuState` to `MuLogic` !BREAKING!
