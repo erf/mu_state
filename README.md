@@ -11,9 +11,9 @@ handling state in Flutter.
 - `MuState` - an alias for `ValueNotifier` where you can optionally use a `MuEvent<T>` type
 - `MuBuilder` - an alias for `ValueListenableBuilder`
 - `MuEvent<T>` - the base class for 3 state objects which can be used in a `MuState<T>`:
-  - `MuDataEvent<T>` - the data state of type `T`
-  - `MuErrorEvent` - the error state
-  - `MuLoadingEvent` - the loading state
+  - `MuData<T>` - the data state of type `T`
+  - `MuError` - the error state
+  - `MuLoading` - the loading state
 - `MuMultiBuilder` - listen to changes of a list of `Listenable` objects
 
 ## How To
@@ -50,7 +50,7 @@ In `main.dart`:
 Scaffold(
   body: Center(
     child: MuBuilder(
-      state: counterState,
+      valueListenable: counterState,
       builder: (context, event, child) {
         return Text('$value');
       },
@@ -81,7 +81,7 @@ Handle loading and error states:
 Scaffold(
   body: Center(
     child: MuBuilder(
-      state: loadState,
+      valueListenable: loadState,
       builder: (context, event, child) {
         return switch (event) {
           MuLoadingEvent() => const CircularProgressIndicator(),
