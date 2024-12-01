@@ -1,33 +1,49 @@
+## 0.4.0
+
+- renamed `MuState` to `MuLogic` !BREAKING!
+- renamed `MuEvent` to `MuState` !BREAKING!
+- `MuLogic` is now just an alias for `ValueNotifier` and can take any type (`MuState` is optional)
+- `MuBuilder` is now just an alias for `ValueListenableBuilder`
+
 ## 0.3.0
-* use explicit type for MuEvent
+
+- use explicit type for MuEvent
 
 ## 0.2.0
-* replace complex mu_event type with 4 sealed types (BREAKING)
-* use switch expression / patterns to handle mu_event types
-* bump sdk version to 3.0.0
+
+- replace complex mu_event type with 4 sealed types (BREAKING)
+- use switch expression / patterns to handle mu_event types
+- bump sdk version to 3.0.0
 
 ## 0.1.1
-* update CHANGELOG
+
+- update CHANGELOG
 
 ## 0.1.0
-* user super in constructors
-* update lints -> 3.0.1
-* sdk env 2.18.0 < 4.0.0
-* add vscode example launcher
+
+- user super in constructors
+- update lints -> 3.0.1
+- sdk env 2.18.0 < 4.0.0
+- add vscode example launcher
 
 ## 0.0.4
-* replace AnimatedBuilder -> ListenableBuilder
-* Set min SDK version to 3.0.0 and Flutter to 3.10.0
+
+- replace AnimatedBuilder -> ListenableBuilder
+- Set min SDK version to 3.0.0 and Flutter to 3.10.0
 
 ## 0.0.3+1
-* Add widget tests and improve unit tests
-* Improve example in README
+
+- Add widget tests and improve unit tests
+- Improve example in README
 
 ## 0.0.3
-* Remove duplicate MuBuilder declaration
+
+- Remove duplicate MuBuilder declaration
 
 ## 0.0.2
-* Split classes into separate files under lib/src
+
+- Split classes into separate files under lib/src
 
 ## 0.0.1
-* Initial release
+
+- Initial release
