@@ -1,11 +1,11 @@
 import 'package:mu_state/mu_state.dart';
 
-class CounterLogic extends MuLogic<int> {
-  CounterLogic(super.initValue);
+class CounterState extends MuState<int> {
+  CounterState(super.initValue);
 
   void increment() {
     value = value + 1;
   }
 }
 
-final counterLogic = CounterLogic(0);
+final counterState = CounterState(0);

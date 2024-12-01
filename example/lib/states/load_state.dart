@@ -1,6 +1,6 @@
 import 'package:mu_state/mu_state.dart';
 
-class LoadState extends MuLogic<MuState<String>> {
+class LoadState extends MuState<MuEvent<String>> {
   LoadState(super.value);
 
   void load() async {
@@ -10,4 +10,4 @@ class LoadState extends MuLogic<MuState<String>> {
   }
 }
 
-final loadLogic = LoadState(const MuData('initial'));
+final loadState = LoadState(const MuData('initial'));

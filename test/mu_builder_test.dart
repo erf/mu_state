@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mu_state/mu_state.dart';
 
 class TestWidget extends StatelessWidget {
-  final MuLogic<MuState<String>> state;
+  final MuState<MuEvent<String>> state;
 
   const TestWidget(this.state, {super.key});
 
@@ -28,7 +28,7 @@ class TestWidget extends StatelessWidget {
   }
 }
 
-class TestState extends MuLogic<MuState<String>> {
+class TestState extends MuState<MuEvent<String>> {
   TestState(super.value);
 }
 

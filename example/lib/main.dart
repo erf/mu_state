@@ -44,21 +44,21 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: MuBuilder(
-                valueListenable: counterLogic,
+                valueListenable: counterState,
                 builder: (context, value, child) => Text('$value'),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: MuMultiBuilder(
-                listenables: [counterLogic, autoCounterLogic, loadLogic],
+                listenables: [counterState, autoCounterState, loadState],
                 builder: (context, values, child) {
                   return Column(
                     children: [
-                      Text('counter: ${counterLogic.value}'),
-                      Text('auto counter: ${autoCounterLogic.value}'),
+                      Text('counter: ${counterState.value}'),
+                      Text('auto counter: ${autoCounterState.value}'),
                       Text(
-                        'load state: ${switch (loadLogic.value) {
+                        'load state: ${switch (loadState.value) {
                           MuLoading() => 'loading',
                           MuError(error: Object error) => 'error: $error',
                           MuData(data: String message) => message,
@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          counterLogic.increment();
-          loadLogic.load();
+          counterState.increment();
+          loadState.load();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
