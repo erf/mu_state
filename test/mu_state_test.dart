@@ -1,29 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:mu_state/mu_state.dart';
 
 void main() {
   test('create MuState with MuEvent.data and other states', () {
-    final state = MuState(const MuEventData('data'));
+    final state = MuLogic(const MuData('data'));
     return switch (state.value) {
-      MuEventData(data: var data) => expect(data, 'data'),
-      _ => fail('Invalid state'),
+      MuData(data: var data) => expect(data, 'data'),
     };
   });
 
   test('create MuEvent.error and assert it has error and other states', () {
-    final state = MuState(MuEventError(AssertionError('Error')));
+    final state = MuLogic(MuError(AssertionError('Error')));
     return switch (state.value) {
-      MuEventError(error: var err) => expect(err, isA<AssertionError>()),
-      _ => fail('Invalid state'),
+      MuError(error: var err) => expect(err, isA<AssertionError>()),
     };
   });
 
   test('create MuEvent.loading and check loading is true and other states', () {
-    final state = MuState(const MuEventLoading());
+    final state = MuLogic(const MuLoading());
     return switch (state.value) {
-      MuEventLoading ev => expect(ev, isA<MuEventLoading>()),
-      _ => fail('Invalid state'),
+      MuLoading ev => expect(ev, isA<MuLoading>()),
     };
   });
 }

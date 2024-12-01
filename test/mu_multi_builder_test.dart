@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mu_state/mu_state.dart';
 
 class TestWidget extends StatelessWidget {
-  final List<MuState> states;
+  final List<MuLogic<MuState>> states;
 
   const TestWidget({super.key, required this.states});
 
@@ -12,14 +12,14 @@ class TestWidget extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: MuMultiBuilder(
-          states: states,
-          builder: (context, List<MuEvent> events, child) {
+          listenables: states,
+          builder: (context, List events, child) {
             return switch (events) {
-              [MuEventLoading _, MuEventLoading _] =>
+              [MuLoading _, MuLoading _] =>
                 const Center(child: Text('Loading')),
-              [MuEventError(error: _), MuEventError(error: _)] =>
+              [MuError(error: _), MuError(error: _)] =>
                 const Center(child: Text('Error')),
-              [MuEventData(data: _), MuEventData(data: _)] =>
+              [MuData(data: _), MuData(data: _)] =>
                 const Center(child: Text('Data')),
               _ => const Center(child: Text('Invalid state')),
             };
@@ -30,11 +30,11 @@ class TestWidget extends StatelessWidget {
   }
 }
 
-class TestStateOne extends MuState {
+class TestStateOne extends MuLogic<MuState> {
   TestStateOne(super.value);
 }
 
-class TestStateTwo extends MuState {
+class TestStateTwo extends MuLogic<MuState> {
   TestStateTwo(super.value);
 }
 
@@ -42,8 +42,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Loading',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEventLoading()),
-      TestStateTwo(const MuEventLoading()),
+      TestStateOne(const MuLoading()),
+      TestStateTwo(const MuLoading()),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 
@@ -53,8 +53,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Error',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEventError('Error 1')),
-      TestStateTwo(const MuEventError('Error 2')),
+      TestStateOne(const MuError('Error 1')),
+      TestStateTwo(const MuError('Error 2')),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 
@@ -64,8 +64,8 @@ void main() {
   testWidgets('Create a TestWidget and expect state is Data',
       (WidgetTester tester) async {
     final states = [
-      TestStateOne(const MuEventData('Data 1')),
-      TestStateTwo(const MuEventData('Data 2')),
+      TestStateOne(const MuData('Data 1')),
+      TestStateTwo(const MuData('Data 2')),
     ];
     await tester.pumpWidget(TestWidget(states: states));
 

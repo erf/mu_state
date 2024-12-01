@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
 
-import 'mu_event.dart';
+import 'mu_logic.dart';
 import 'mu_state.dart';
 
-/// Listen to a list of [MuState] objects and get notified on any change.
+/// Listen to a list of [MuLogic] objects and get notified on any change.
 class MuMultiBuilder extends StatelessWidget {
-  /// List of [MuState]s to listen to.
-  final List<MuState> states;
+  /// List of [MuLogic]s to listen to.
+  final List<MuLogic> listenables;
 
-  /// The builder is called when the value of any of the [states] changes and is
-  /// passed the [BuildContext] and the list of [MuEvent]s.
-  final Widget Function(
-      BuildContext context, List<MuEvent> values, Widget? child) builder;
+  /// The builder is called when the value of any of the [listenables] changes and is
+  /// passed the [BuildContext] and the list of [MuState]s.
+  final Widget Function(BuildContext context, List values, Widget? child)
+      builder;
 
   /// An optional [child] widget will passed to [builder].
   final Widget? child;
@@ -19,22 +19,23 @@ class MuMultiBuilder extends StatelessWidget {
   const MuMultiBuilder({
     super.key,
 
-    /// List of [MuState]s to listen to.
-    required this.states,
+    /// List of [MuLogic] classes to listen to.
+    required this.listenables,
 
     /// The builder function is called when the value of any of the [states] changes.
     required this.builder,
     this.child,
-  }) : assert(states.length != 0);
+  }) : assert(listenables.length != 0);
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: Listenable.merge(states),
-      builder: (BuildContext context, Widget? child) {
-        return builder(context,
-            states.map((listenable) => listenable.value).toList(), child);
-      },
+      listenable: Listenable.merge(listenables),
+      builder: (BuildContext context, Widget? child) => builder(
+        context,
+        listenables.map((listenable) => listenable.value).toList(),
+        child,
+      ),
       child: child,
     );
   }

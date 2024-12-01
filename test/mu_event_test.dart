@@ -1,15 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:mu_state/src/mu_event.dart';
+import 'package:mu_state/src/mu_state.dart';
 
 void main() {
   test('test MuEventData', () {
-    const event = MuEventData('Data');
+    const event = MuData('Data');
     expect(event.data, 'Data');
   });
 
   test('test MuEventError', () {
-    final event = MuEventError(AssertionError('Error'));
+    final event = MuError(AssertionError('Error'));
     expect(event.error, isA<AssertionError>());
   });
 }

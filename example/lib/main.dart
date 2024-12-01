@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
 
+import 'states/auto_counter_state.dart';
 import 'states/counter_state.dart';
 import 'states/load_state.dart';
-import 'states/auto_counter_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,43 +44,24 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: MuBuilder(
-                state: counterState,
-                builder: (context, event, child) {
-                  return switch (event) {
-                    MuEventLoading() => const CircularProgressIndicator(),
-                    MuEventError(error: Object error) => Text('Error: $error'),
-                    MuEventData(data: int data) => Text('$data')
-                  };
-                },
+                valueListenable: counterLogic,
+                builder: (context, value, child) => Text('$value'),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: MuMultiBuilder(
-                states: [counterState, autoCounterState, loadState],
+                listenables: [counterLogic, autoCounterLogic, loadLogic],
                 builder: (context, values, child) {
                   return Column(
                     children: [
+                      Text('counter: ${counterLogic.value}'),
+                      Text('auto counter: ${autoCounterLogic.value}'),
                       Text(
-                        'counter: ${switch (counterState.value) {
-                          MuEventLoading() => 'load',
-                          MuEventError(error: Object error) => 'error: $error',
-                          MuEventData(data: int value) => value,
-                        }}',
-                      ),
-                      Text(
-                        'auto counter: ${switch (autoCounterState.value) {
-                          MuEventLoading() => 'loading',
-                          MuEventError(error: Object error) => 'error: $error',
-                          MuEventData(data: int value) => value,
-                          _ => '',
-                        }}',
-                      ),
-                      Text(
-                        'load state: ${switch (loadState.value) {
-                          MuEventLoading() => 'loading',
-                          MuEventError(error: Object error) => 'error: $error',
-                          MuEventData(data: String message) => message,
+                        'load state: ${switch (loadLogic.value) {
+                          MuLoading() => 'loading',
+                          MuError(error: Object error) => 'error: $error',
+                          MuData(data: String message) => message,
                         }}',
                       ),
                     ],
@@ -93,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          counterState.increment();
-          loadState.load();
+          counterLogic.increment();
+          loadLogic.load();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
