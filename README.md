@@ -66,13 +66,13 @@ class LoadState extends MuState<MuEvent<String>> {
   LoadState(super.value);
 
   void load() async {
-    value = const MuLoadingEvent();
+    value = const MuLoading();
     await Future.delayed(const Duration(milliseconds: 500));
-    value = const MuDataEvent('done');
+    value = const MuData('done');
   }
 }
 
-final loadState = LoadState(const MuDataEvent('initial'));
+final loadState = LoadState(const MuData('initial'));
 ```
 
 Handle loading and error states:
@@ -84,9 +84,9 @@ Scaffold(
       valueListenable: loadState,
       builder: (context, event, child) {
         return switch (event) {
-          MuLoadingEvent() => const CircularProgressIndicator(),
-          MuErrorEvent() => Text('Error: ${event.error}'),
-          MuDataEvent() => Text('Data: ${event.data}'),
+          MuLoading() => const CircularProgressIndicator(),
+          MuError() => Text('Error: ${event.error}'),
+          MuData() => Text('Data: ${event.data}'),
         };
       },
     ),
