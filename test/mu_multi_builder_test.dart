@@ -2,73 +2,124 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mu_state/mu_state.dart';
 
-class TestWidget extends StatelessWidget {
-  final List<MuState<MuEvent>> states;
+class TestStateOne with MuComparable {
+  final String value;
 
-  const TestWidget({super.key, required this.states});
+  const TestStateOne(this.value);
+
+  TestStateOne copyWith({String? value}) {
+    return TestStateOne(value ?? this.value);
+  }
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class TestStateTwo with MuComparable {
+  final int value;
+
+  const TestStateTwo(this.value);
+
+  TestStateTwo copyWith({int? value}) {
+    return TestStateTwo(value ?? this.value);
+  }
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class TestLogicOne extends MuLogic<TestStateOne> {
+  TestLogicOne() : super(const TestStateOne('initial1'));
+
+  void updateValue(String newValue) {
+    value = value.copyWith(value: newValue);
+  }
+}
+
+class TestLogicTwo extends MuLogic<TestStateTwo> {
+  TestLogicTwo() : super(const TestStateTwo(0));
+
+  void updateValue(int newValue) {
+    value = value.copyWith(value: newValue);
+  }
+}
+
+class TestWidget extends StatelessWidget {
+  final List<MuLogic> logics;
+
+  const TestWidget(this.logics, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: MuMultiBuilder(
-          listenables: states,
-          builder: (context, List events, child) {
-            return switch (events) {
-              [MuLoading _, MuLoading _] =>
-                const Center(child: Text('Loading')),
-              [MuError(error: _), MuError(error: _)] =>
-                const Center(child: Text('Error')),
-              [MuData(data: _), MuData(data: _)] =>
-                const Center(child: Text('Data')),
-              _ => const Center(child: Text('Invalid state')),
-            };
-          },
-        ),
+      home: MuMultiBuilder(
+        listenables: logics,
+        builder: (context, values, child) {
+          return Column(
+            children: [
+              Text('State1: ${(values[0] as TestStateOne).value}'),
+              Text('State2: ${(values[1] as TestStateTwo).value}'),
+            ],
+          );
+        },
       ),
     );
   }
 }
 
-class TestStateOne extends MuState<MuEvent> {
-  TestStateOne(super.value);
-}
-
-class TestStateTwo extends MuState<MuEvent> {
-  TestStateTwo(super.value);
-}
-
 void main() {
-  testWidgets('Create a TestWidget and expect state is Loading',
-      (WidgetTester tester) async {
-    final states = [
-      TestStateOne(const MuLoading()),
-      TestStateTwo(const MuLoading()),
-    ];
-    await tester.pumpWidget(TestWidget(states: states));
+  group('MuMultiBuilder Tests', () {
+    testWidgets('should display initial states', (WidgetTester tester) async {
+      final logic1 = TestLogicOne();
+      final logic2 = TestLogicTwo();
 
-    expect(find.text('Loading'), findsOneWidget);
-  });
+      await tester.pumpWidget(TestWidget([logic1, logic2]));
 
-  testWidgets('Create a TestWidget and expect state is Error',
-      (WidgetTester tester) async {
-    final states = [
-      TestStateOne(const MuError('Error 1')),
-      TestStateTwo(const MuError('Error 2')),
-    ];
-    await tester.pumpWidget(TestWidget(states: states));
+      expect(find.text('State1: initial1'), findsOneWidget);
+      expect(find.text('State2: 0'), findsOneWidget);
+    });
 
-    expect(find.text('Error'), findsOneWidget);
-  });
+    testWidgets('should rebuild when first state changes',
+        (WidgetTester tester) async {
+      final logic1 = TestLogicOne();
+      final logic2 = TestLogicTwo();
 
-  testWidgets('Create a TestWidget and expect state is Data',
-      (WidgetTester tester) async {
-    final states = [
-      TestStateOne(const MuData('Data 1')),
-      TestStateTwo(const MuData('Data 2')),
-    ];
-    await tester.pumpWidget(TestWidget(states: states));
+      await tester.pumpWidget(TestWidget([logic1, logic2]));
 
-    expect(find.text('Data'), findsOneWidget);
+      logic1.updateValue('updated1');
+      await tester.pump();
+
+      expect(find.text('State1: updated1'), findsOneWidget);
+      expect(find.text('State2: 0'), findsOneWidget);
+    });
+
+    testWidgets('should rebuild when second state changes',
+        (WidgetTester tester) async {
+      final logic1 = TestLogicOne();
+      final logic2 = TestLogicTwo();
+
+      await tester.pumpWidget(TestWidget([logic1, logic2]));
+
+      logic2.updateValue(42);
+      await tester.pump();
+
+      expect(find.text('State1: initial1'), findsOneWidget);
+      expect(find.text('State2: 42'), findsOneWidget);
+    });
+
+    testWidgets('should rebuild when both states change',
+        (WidgetTester tester) async {
+      final logic1 = TestLogicOne();
+      final logic2 = TestLogicTwo();
+
+      await tester.pumpWidget(TestWidget([logic1, logic2]));
+
+      logic1.updateValue('both1');
+      logic2.updateValue(99);
+      await tester.pump();
+
+      expect(find.text('State1: both1'), findsOneWidget);
+      expect(find.text('State2: 99'), findsOneWidget);
+    });
   });
 }
