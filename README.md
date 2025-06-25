@@ -4,14 +4,24 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 
 > Based on my article [Pragmatic state handling in Flutter](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2)
 
-## Core Components
+## Components
 
-- **`MuLogic<T>`** - Your business logic class that extends `ValueNotifier`. Contains state and methods to update it.
-- **`MuBuilder<T>`** - Rebuilds widgets when state changes. Wrapper around `ValueListenableBuilder`.
-- **`MuProvider<L, S>`** - Provides logic instances to the widget tree using `InheritedWidget`. For dependency injection only.
-- **`context.logic<L, S>()`** - Retrieves logic from the widget tree. Clean alternative to `Provider.of()`.
-- **`MuComparable`** - Mixin for state classes that provides equality comparison to prevent unnecessary rebuilds.
-- **`MuMultiBuilder`** - Listen to multiple logic instances simultaneously.
+- **`MuLogic<T>`** - Alias for `ValueNotifier` to manage state and business logic. Alternative to `Cubit`.
+- **`MuBuilder<T>`** - Alias for `ValueListenableBuilder` to rebuild UI on state changes.
+- **`MuMultiBuilder`** - Listen to multiple `MuLogic` instances and rebuild when any of them change.
+- **`MuProvider<L, S>`** - Provides `MuLogic` instances down the widget tree using `InheritedWidget`.
+- **`context.logic<L, S>()`** - Extension method to access `MuLogic` instances from the widget context.
+- **`MuComparable`** - Mixin for state classes to enable equality comparisons via `props` list. A lightweight alternative to the `Equatable` package.
+
+## Usage
+
+**Quick workflow:**
+
+1. **Create logic** → Extend `MuLogic<YourState>` with business methods (one per page/feature)
+2. **Define state(s)** → Create immutable classes with `MuComparable` and `copyWith()` (can have multiple per page: LoadingState, ErrorState, ReadyState, etc.)
+3. **Update state** → Use `value = state.copyWith(...)` (not `emit()`)
+4. **Provide logic** → Wrap app with `MuProvider<Logic, State>`
+5. **Build UI** → Use `MuBuilder` to listen or `context.logic<T>()` to access
 
 ## Example
 
