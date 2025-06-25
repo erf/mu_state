@@ -1,5 +1,5 @@
 name: mu_state
-description: A set of helpers for pragmatic state handling as mentioned in my Medium article.
+description: Minimal Cubit-inspired state management using Flutter's built-in primitives. No external dependencies.
 version: 1.0.0
 homepage: https://github.com/erf/mu_state
 
