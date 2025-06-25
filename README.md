@@ -1,6 +1,8 @@
 # mu_state
 
-A minimal state solution based on my article [Pragmatic state handling in Flutter](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2) and inspired by **Cubit architecture** using Flutter's built-in primitives.
+Minimal Cubit-inspired state management using Flutter's built-in primitives. No external dependencies.
+
+> Based on my article [Pragmatic state handling in Flutter](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2)
 
 ## Core Components
 
@@ -98,4 +100,4 @@ class CounterPage extends StatelessWidget {
 }
 ```
 
-> See the [example project](example/) for a complete implementation with more features.
+See the [example project](example/) for a complete implementation with more features.
