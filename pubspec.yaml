@@ -3,6 +3,13 @@ description: Minimal Cubit-inspired state management using Flutter's built-in pr
 version: 1.0.0+1
 homepage: https://github.com/erf/mu_state
 
+topics:
+  - state-management
+  - cubit
+  - state
+  - valuenotifier
+  - minimal
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
