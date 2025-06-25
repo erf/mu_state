@@ -89,28 +89,28 @@ void main() {
 
     test('should work with different state types', () {
       final logic = MuLogic<String>('initial');
-      
+
       expect(logic.value, 'initial');
-      
+
       logic.value = 'updated';
       expect(logic.value, 'updated');
     });
 
     test('should work with nullable state types', () {
       final logic = MuLogic<String?>(null);
-      
+
       expect(logic.value, isNull);
-      
+
       logic.value = 'not null';
       expect(logic.value, 'not null');
-      
+
       logic.value = null;
       expect(logic.value, isNull);
     });
 
     test('should be a ValueNotifier', () {
       final logic = TestLogic();
-      
+
       // MuLogic should be a ValueNotifier
       expect(logic, isA<ValueNotifier<TestState>>());
     });
