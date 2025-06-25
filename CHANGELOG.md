@@ -1,24 +1,20 @@
 ## 1.0.0
 
-**MAJOR RELEASE**: Complete refactor towards a more pragmatic, minimalist approach.
-
 ### New Features
-- `MuLogic<T>` - Main class for managing state and logic (alias for `ValueNotifier`)
-- `MuProvider<L, S>` - Provides logic instances to widget tree using `InheritedNotifier`
+- `MuLogic<T>` - Renamed from `MuState` for clarity (still an alias for `ValueNotifier`)
+- `MuProvider<L, S>` - Provides logic instances to widget tree using `InheritedWidget`
 - `context.logic<T>()` extension - Easy access to logic from context
 - `MuComparable` mixin - Lightweight alternative to Equatable for state equality
 
 ### Breaking Changes
-- **REMOVED**: `MuState`, `MuEvent`, `MuLoading`, `MuError`, `MuData` classes
-- Users must define their own immutable state classes per page/feature
-- Use `MuLogic` instead of `MuState`
-- Use custom state classes instead of `MuEvent` subclasses
+- **RENAMED**: `MuState` → `MuLogic<T>` for better clarity
+- **REMOVED**: Pre-defined state classes (`MuEvent`, `MuLoading`, `MuError`, `MuData`)
+- Users now define their own immutable state classes with `MuComparable`
 
-### Philosophy Changes
-- One logic class per page/feature (similar to Cubit pattern)
-- Custom immutable state classes with `MuComparable` or `Equatable`
+### Architecture
+- Follows Cubit-style pattern: one logic class per page/feature
+- Custom state classes instead of pre-defined ones
 - Direct value assignment (`value = ...`) instead of `emit()`
-- Minimal Flutter dependencies only (`flutter/foundation.dart`, `flutter/widgets.dart`)
 
 ### Unchanged
 - `MuBuilder<T>` - Still an alias for `ValueListenableBuilder`
