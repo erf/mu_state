@@ -8,6 +8,7 @@ class HomePageState with MuComparable {
   final bool isLoading;
   final List<String> items;
   final HomePageStatus status;
+  final String? currentUser;
 
   const HomePageState({
     required this.counter,
@@ -15,6 +16,7 @@ class HomePageState with MuComparable {
     required this.isLoading,
     required this.items,
     required this.status,
+    this.currentUser,
   });
 
   HomePageState copyWith({
@@ -23,6 +25,7 @@ class HomePageState with MuComparable {
     bool? isLoading,
     List<String>? items,
     HomePageStatus? status,
+    String? currentUser,
   }) {
     return HomePageState(
       counter: counter ?? this.counter,
@@ -30,9 +33,11 @@ class HomePageState with MuComparable {
       isLoading: isLoading ?? this.isLoading,
       items: items ?? this.items,
       status: status ?? this.status,
+      currentUser: currentUser ?? this.currentUser,
     );
   }
 
   @override
-  List<Object?> get props => [counter, message, isLoading, items, status];
+  List<Object?> get props =>
+      [counter, message, isLoading, items, status, currentUser];
 }

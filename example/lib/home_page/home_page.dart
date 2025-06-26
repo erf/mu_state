@@ -1,5 +1,6 @@
 import 'package:example/home_page/home_page_logic.dart';
 import 'package:example/home_page/home_page_state.dart';
+import 'package:example/login/login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
 
@@ -18,11 +19,16 @@ class HomePage extends StatelessWidget {
       body: MuBuilder<HomePageState>(
         valueListenable: logic,
         builder: (context, state, child) {
-          return Padding(
+          return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Login/User Section
+                const LoginWidget(),
+
+                const SizedBox(height: 16),
+
                 // Status Card
                 Card(
                   child: Padding(
@@ -124,7 +130,8 @@ class HomePage extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // Items Section
-                Expanded(
+                SizedBox(
+                  height: 300, // Fixed height instead of Expanded
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
