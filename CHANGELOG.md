@@ -1,3 +1,9 @@
+## 1.1.0
+
+- **Added `MuMultiProvider`** - Clean nesting of multiple providers
+- **Enhanced example** - Login feature with MuMultiProvider and repository pattern
+- **Documentation improvements** - Better README structure
+
 ## 1.0.0
 
 ### New Features
@@ -12,9 +18,8 @@
 - Users now define their own immutable state classes with `MuComparable`
 
 ### Architecture
-- Follows Cubit-style pattern: one logic class per page/feature
+- Encouraging Cubit-style pattern: one logic class per page/feature
 - Custom state classes instead of pre-defined ones
-- Direct value assignment (`value = ...`) instead of `emit()`
 
 ### Unchanged
 - `MuBuilder<T>` - Still an alias for `ValueListenableBuilder`
