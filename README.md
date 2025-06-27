@@ -10,6 +10,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 - **`MuBuilder<T>`** - Alias for `ValueListenableBuilder` to rebuild UI on state changes.
 - **`MuMultiBuilder`** - Listen to multiple `MuLogic` instances and rebuild when any of them change.
 - **`MuProvider<L, S>`** - Provides `MuLogic` instances down the widget tree using `InheritedWidget`.
+- **`MuMultiProvider`** - Convenience widget for nesting multiple `MuProvider` widgets cleanly.
 - **`context.logic<L, S>()`** - Extension method to access `MuLogic` instances from the widget context.
 - **`MuComparable`** - Mixin for state classes to enable equality comparisons via `props` list. A lightweight alternative to the `Equatable` package.
 
@@ -20,7 +21,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 1. **Create logic** → Extend `MuLogic<YourState>` with business methods (one per page/feature)
 2. **Define state(s)** → Create immutable classes with `MuComparable` and `copyWith()` (can have multiple per page: LoadingState, ErrorState, ReadyState, etc.)
 3. **Update state** → Use `value = state.copyWith(...)` (not `emit()`)
-4. **Provide logic** → Wrap app with `MuProvider<Logic, State>`
+4. **Provide logic** → Wrap app with `MuProvider<Logic, State>` or `MuMultiProvider`to avoid nesting multiple providers.
 5. **Build UI** → Use `MuBuilder` to listen or `context.logic<T>()` to access
 
 ## Example
