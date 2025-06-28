@@ -4,6 +4,37 @@ import 'package:example/login/login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
 
+/// Helper function to convert message types to localized strings
+String getLocalizedMessage(
+    BuildContext context, HomePageMessage messageType, String? messageData) {
+  switch (messageType) {
+    case HomePageMessage.welcome:
+      return 'Welcome to the mu_state example!';
+    case HomePageMessage.welcomeWithUser:
+      return 'Welcome back, ${messageData ?? 'User'}!';
+    case HomePageMessage.counterIncremented:
+      return 'Counter incremented to ${messageData ?? '0'}';
+    case HomePageMessage.counterDecremented:
+      return 'Counter decremented to ${messageData ?? '0'}';
+    case HomePageMessage.counterReset:
+      return 'Counter has been reset to 0';
+    case HomePageMessage.counterIncrementedAsync:
+      return 'Counter incremented asynchronously to ${messageData ?? '0'}';
+    case HomePageMessage.incrementingCounter:
+      return 'Incrementing counter...';
+    case HomePageMessage.loadingItems:
+      return 'Loading items...';
+    case HomePageMessage.itemsLoadedSuccess:
+      return 'Successfully loaded ${messageData ?? '0'} new items!';
+    case HomePageMessage.itemsCleared:
+      return 'All items cleared';
+    case HomePageMessage.networkError:
+      return 'Network error: ${messageData ?? 'Unknown error'}';
+    case HomePageMessage.incrementError:
+      return 'Error incrementing counter: ${messageData ?? 'Unknown error'}';
+  }
+}
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -72,7 +103,8 @@ class HomePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          state.message,
+                          getLocalizedMessage(
+                              context, state.messageType, state.messageData),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],

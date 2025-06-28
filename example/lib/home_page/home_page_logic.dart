@@ -1,5 +1,5 @@
-import 'package:example/repository/auth_repository.dart';
 import 'package:example/home_page/home_page_state.dart';
+import 'package:example/repository/auth_repository.dart';
 import 'package:mu_state/mu_state.dart';
 
 class HomePageLogic extends MuLogic<HomePageState> {
@@ -8,7 +8,7 @@ class HomePageLogic extends MuLogic<HomePageState> {
   HomePageLogic([this._authRepository])
       : super(const HomePageState(
           counter: 0,
-          message: 'Welcome! Tap the buttons to interact.',
+          messageType: HomePageMessage.welcome,
           isLoading: false,
           items: [],
           status: HomePageStatus.idle,
@@ -21,37 +21,41 @@ class HomePageLogic extends MuLogic<HomePageState> {
     final user = _authRepository?.currentUser.value;
     value = value.copyWith(
       currentUser: user,
-      message: user != null
-          ? 'Welcome back, $user! Tap the buttons to interact.'
-          : 'Welcome! Tap the buttons to interact.',
+      messageType: user != null
+          ? HomePageMessage.welcomeWithUser
+          : HomePageMessage.welcome,
+      messageData: user,
     );
   }
 
   void increment() {
     value = value.copyWith(
       counter: value.counter + 1,
-      message: 'Counter incremented to ${value.counter + 1}',
+      messageType: HomePageMessage.counterIncremented,
+      messageData: (value.counter + 1).toString(),
     );
   }
 
   void decrement() {
     value = value.copyWith(
       counter: value.counter - 1,
-      message: 'Counter decremented to ${value.counter - 1}',
+      messageType: HomePageMessage.counterDecremented,
+      messageData: (value.counter - 1).toString(),
     );
   }
 
   void reset() {
     value = value.copyWith(
       counter: 0,
-      message: 'Counter reset to 0',
+      messageType: HomePageMessage.counterReset,
+      messageData: null,
     );
   }
 
   Future<void> incrementAsync() async {
     value = value.copyWith(
       isLoading: true,
-      message: 'Incrementing counter...',
+      messageType: HomePageMessage.incrementingCounter,
       status: HomePageStatus.loading,
     );
 
@@ -62,13 +66,15 @@ class HomePageLogic extends MuLogic<HomePageState> {
       value = value.copyWith(
         counter: value.counter + 1,
         isLoading: false,
-        message: 'Counter incremented to ${value.counter + 1} (async)',
+        messageType: HomePageMessage.counterIncrementedAsync,
+        messageData: (value.counter + 1).toString(),
         status: HomePageStatus.success,
       );
     } catch (e) {
       value = value.copyWith(
         isLoading: false,
-        message: 'Failed to increment counter: $e',
+        messageType: HomePageMessage.incrementError,
+        messageData: e.toString(),
         status: HomePageStatus.error,
       );
     }
@@ -78,7 +84,7 @@ class HomePageLogic extends MuLogic<HomePageState> {
     value = value.copyWith(
       isLoading: true,
       status: HomePageStatus.loading,
-      message: 'Loading items...',
+      messageType: HomePageMessage.loadingItems,
     );
 
     try {
@@ -99,13 +105,15 @@ class HomePageLogic extends MuLogic<HomePageState> {
         isLoading: false,
         status: HomePageStatus.success,
         items: [...value.items, ...newItems],
-        message: 'Successfully loaded ${newItems.length} new items!',
+        messageType: HomePageMessage.itemsLoadedSuccess,
+        messageData: newItems.length.toString(),
       );
     } catch (e) {
       value = value.copyWith(
         isLoading: false,
         status: HomePageStatus.error,
-        message: 'Error: $e',
+        messageType: HomePageMessage.networkError,
+        messageData: e.toString(),
       );
     }
   }
@@ -113,7 +121,7 @@ class HomePageLogic extends MuLogic<HomePageState> {
   void clearItems() {
     value = value.copyWith(
       items: [],
-      message: 'All items cleared',
+      messageType: HomePageMessage.itemsCleared,
       status: HomePageStatus.idle,
     );
   }

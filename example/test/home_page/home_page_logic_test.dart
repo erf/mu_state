@@ -8,7 +8,8 @@ void main() {
     test('should create with required values', () {
       const state = HomePageState(
         counter: 5,
-        message: 'Test message',
+        messageType: HomePageMessage.welcome,
+        messageData: 'Test data',
         isLoading: true,
         items: ['item1', 'item2'],
         status: HomePageStatus.success,
@@ -16,7 +17,8 @@ void main() {
       );
 
       expect(state.counter, equals(5));
-      expect(state.message, equals('Test message'));
+      expect(state.messageType, equals(HomePageMessage.welcome));
+      expect(state.messageData, equals('Test data'));
       expect(state.isLoading, isTrue);
       expect(state.items, equals(['item1', 'item2']));
       expect(state.status, equals(HomePageStatus.success));
@@ -26,7 +28,8 @@ void main() {
     test('should copy with new values', () {
       const original = HomePageState(
         counter: 1,
-        message: 'Original',
+        messageType: HomePageMessage.welcome,
+        messageData: 'Original data',
         isLoading: false,
         items: ['original'],
         status: HomePageStatus.idle,
@@ -35,7 +38,8 @@ void main() {
 
       final copied = original.copyWith(
         counter: 10,
-        message: 'Updated',
+        messageType: HomePageMessage.counterIncremented,
+        messageData: 'Updated data',
         isLoading: true,
         items: ['updated1', 'updated2'],
         status: HomePageStatus.loading,
@@ -43,7 +47,8 @@ void main() {
       );
 
       expect(copied.counter, equals(10));
-      expect(copied.message, equals('Updated'));
+      expect(copied.messageType, equals(HomePageMessage.counterIncremented));
+      expect(copied.messageData, equals('Updated data'));
       expect(copied.isLoading, isTrue);
       expect(copied.items, equals(['updated1', 'updated2']));
       expect(copied.status, equals(HomePageStatus.loading));
@@ -51,13 +56,15 @@ void main() {
 
       // Original should remain unchanged
       expect(original.counter, equals(1));
-      expect(original.message, equals('Original'));
+      expect(original.messageType, equals(HomePageMessage.welcome));
+      expect(original.messageData, equals('Original data'));
     });
 
     test('should be equal when properties are the same', () {
       const state1 = HomePageState(
         counter: 5,
-        message: 'Test',
+        messageType: HomePageMessage.welcome,
+        messageData: 'Test data',
         isLoading: true,
         items: ['item1', 'item2'],
         status: HomePageStatus.loading,
@@ -66,7 +73,8 @@ void main() {
 
       const state2 = HomePageState(
         counter: 5,
-        message: 'Test',
+        messageType: HomePageMessage.welcome,
+        messageData: 'Test data',
         isLoading: true,
         items: ['item1', 'item2'],
         status: HomePageStatus.loading,
@@ -113,8 +121,7 @@ void main() {
 
     test('should initialize with default state', () {
       expect(logic.value.counter, equals(0));
-      expect(
-          logic.value.message, equals('Welcome! Tap the buttons to interact.'));
+      expect(logic.value.messageType, equals(HomePageMessage.welcome));
       expect(logic.value.isLoading, isFalse);
       expect(logic.value.items, isEmpty);
       expect(logic.value.status, equals(HomePageStatus.idle));
@@ -125,8 +132,8 @@ void main() {
       final logicWithoutAuth = HomePageLogic();
 
       expect(logicWithoutAuth.value.counter, equals(0));
-      expect(logicWithoutAuth.value.message,
-          equals('Welcome! Tap the buttons to interact.'));
+      expect(
+          logicWithoutAuth.value.messageType, equals(HomePageMessage.welcome));
       expect(logicWithoutAuth.value.currentUser, isNull);
 
       logicWithoutAuth.dispose();
@@ -140,8 +147,8 @@ void main() {
 
       // Logic should update message with user
       expect(logic.value.currentUser, equals(username));
-      expect(logic.value.message,
-          equals('Welcome back, $username! Tap the buttons to interact.'));
+      expect(logic.value.messageType, equals(HomePageMessage.welcomeWithUser));
+      expect(logic.value.messageData, equals(username));
     });
 
     test('should increment counter', () {
@@ -150,7 +157,9 @@ void main() {
       logic.increment();
 
       expect(logic.value.counter, equals(1));
-      expect(logic.value.message, equals('Counter incremented to 1'));
+      expect(
+          logic.value.messageType, equals(HomePageMessage.counterIncremented));
+      expect(logic.value.messageData, equals('1'));
     });
 
     test('should decrement counter', () {
@@ -162,7 +171,9 @@ void main() {
       logic.decrement();
 
       expect(logic.value.counter, equals(1));
-      expect(logic.value.message, equals('Counter decremented to 1'));
+      expect(
+          logic.value.messageType, equals(HomePageMessage.counterDecremented));
+      expect(logic.value.messageData, equals('1'));
     });
 
     test('should allow negative counter values', () {
@@ -171,7 +182,9 @@ void main() {
       logic.decrement();
 
       expect(logic.value.counter, equals(-1));
-      expect(logic.value.message, equals('Counter decremented to -1'));
+      expect(
+          logic.value.messageType, equals(HomePageMessage.counterDecremented));
+      expect(logic.value.messageData, equals('-1'));
     });
 
     test('should reset counter to zero', () {
@@ -183,7 +196,7 @@ void main() {
       logic.reset();
 
       expect(logic.value.counter, equals(0));
-      expect(logic.value.message, equals('Counter reset to 0'));
+      expect(logic.value.messageType, equals(HomePageMessage.counterReset));
     });
 
     test('should perform async increment', () async {
@@ -196,7 +209,8 @@ void main() {
       // Should be in loading state
       expect(logic.value.isLoading, isTrue);
       expect(logic.value.status, equals(HomePageStatus.loading));
-      expect(logic.value.message, equals('Incrementing counter...'));
+      expect(
+          logic.value.messageType, equals(HomePageMessage.incrementingCounter));
 
       // Wait for completion
       await future;
@@ -205,7 +219,9 @@ void main() {
       expect(logic.value.counter, equals(1));
       expect(logic.value.isLoading, isFalse);
       expect(logic.value.status, equals(HomePageStatus.success));
-      expect(logic.value.message, equals('Counter incremented to 1 (async)'));
+      expect(logic.value.messageType,
+          equals(HomePageMessage.counterIncrementedAsync));
+      expect(logic.value.messageData, equals('1'));
     });
 
     test('should load items successfully or handle error', () async {
@@ -218,7 +234,7 @@ void main() {
       // Should be in loading state
       expect(logic.value.isLoading, isTrue);
       expect(logic.value.status, equals(HomePageStatus.loading));
-      expect(logic.value.message, equals('Loading items...'));
+      expect(logic.value.messageType, equals(HomePageMessage.loadingItems));
 
       // Wait for completion
       await future;
@@ -228,11 +244,13 @@ void main() {
       if (logic.value.status == HomePageStatus.success) {
         expect(logic.value.items.length, equals(5));
         expect(logic.value.items.first, equals('Item 1'));
-        expect(logic.value.message, equals('Successfully loaded 5 new items!'));
+        expect(logic.value.messageType,
+            equals(HomePageMessage.itemsLoadedSuccess));
+        expect(logic.value.messageData, equals('5'));
       } else {
         expect(logic.value.status, equals(HomePageStatus.error));
         expect(logic.value.items, isEmpty);
-        expect(logic.value.message, contains('Error:'));
+        expect(logic.value.messageType, equals(HomePageMessage.networkError));
       }
     });
 
@@ -251,10 +269,11 @@ void main() {
 
       if (logic.value.status == HomePageStatus.error) {
         expect(logic.value.items, isEmpty);
-        expect(logic.value.message, contains('Error:'));
+        expect(logic.value.messageType, equals(HomePageMessage.networkError));
       } else {
         expect(logic.value.items.length, equals(5));
-        expect(logic.value.message, contains('Successfully loaded'));
+        expect(logic.value.messageType,
+            equals(HomePageMessage.itemsLoadedSuccess));
       }
     });
 
@@ -301,14 +320,14 @@ void main() {
         logic.clearItems();
 
         expect(logic.value.items, isEmpty);
-        expect(logic.value.message, equals('All items cleared'));
+        expect(logic.value.messageType, equals(HomePageMessage.itemsCleared));
         expect(logic.value.status, equals(HomePageStatus.idle));
       } else {
         // If no items were loaded (due to random failure), just test clearing empty list
         logic.clearItems();
 
         expect(logic.value.items, isEmpty);
-        expect(logic.value.message, equals('All items cleared'));
+        expect(logic.value.messageType, equals(HomePageMessage.itemsCleared));
         expect(logic.value.status, equals(HomePageStatus.idle));
       }
     });
@@ -322,7 +341,9 @@ void main() {
 
       // Login and verify message update
       await testRepo.login(username);
-      expect(testLogic.value.message, contains(username));
+      expect(
+          testLogic.value.messageType, equals(HomePageMessage.welcomeWithUser));
+      expect(testLogic.value.messageData, equals(username));
 
       // Dispose logic
       testLogic.dispose();
@@ -343,7 +364,9 @@ void main() {
       logic.decrement(); // -1
 
       expect(logic.value.counter, equals(-1));
-      expect(logic.value.message, equals('Counter decremented to -1'));
+      expect(
+          logic.value.messageType, equals(HomePageMessage.counterDecremented));
+      expect(logic.value.messageData, equals('-1'));
     });
 
     test('should maintain state consistency during rapid operations', () async {

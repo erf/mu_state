@@ -2,9 +2,25 @@ import 'package:mu_state/mu_state.dart';
 
 enum HomePageStatus { idle, loading, success, error }
 
+enum HomePageMessage {
+  welcome,
+  welcomeWithUser,
+  counterIncremented,
+  counterDecremented,
+  counterReset,
+  counterIncrementedAsync,
+  incrementingCounter,
+  loadingItems,
+  itemsLoadedSuccess,
+  itemsCleared,
+  networkError,
+  incrementError,
+}
+
 class HomePageState with MuComparable {
   final int counter;
-  final String message;
+  final HomePageMessage messageType;
+  final String? messageData; // For dynamic data like username, count, etc.
   final bool isLoading;
   final List<String> items;
   final HomePageStatus status;
@@ -12,7 +28,8 @@ class HomePageState with MuComparable {
 
   const HomePageState({
     required this.counter,
-    required this.message,
+    required this.messageType,
+    this.messageData,
     required this.isLoading,
     required this.items,
     required this.status,
@@ -21,7 +38,8 @@ class HomePageState with MuComparable {
 
   HomePageState copyWith({
     int? counter,
-    String? message,
+    HomePageMessage? messageType,
+    String? messageData,
     bool? isLoading,
     List<String>? items,
     HomePageStatus? status,
@@ -29,7 +47,8 @@ class HomePageState with MuComparable {
   }) {
     return HomePageState(
       counter: counter ?? this.counter,
-      message: message ?? this.message,
+      messageType: messageType ?? this.messageType,
+      messageData: messageData ?? this.messageData,
       isLoading: isLoading ?? this.isLoading,
       items: items ?? this.items,
       status: status ?? this.status,
@@ -38,6 +57,13 @@ class HomePageState with MuComparable {
   }
 
   @override
-  List<Object?> get props =>
-      [counter, message, isLoading, items, status, currentUser];
+  List<Object?> get props => [
+        counter,
+        messageType,
+        messageData,
+        isLoading,
+        items,
+        status,
+        currentUser
+      ];
 }
