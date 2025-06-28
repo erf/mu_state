@@ -1,4 +1,4 @@
-import 'package:example/auth_repository.dart';
+import 'package:example/repository/auth_repository.dart';
 import 'package:example/home_page/home_page_state.dart';
 import 'package:mu_state/mu_state.dart';
 
