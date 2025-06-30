@@ -2,7 +2,7 @@
 
 Minimal Cubit-inspired state management using Flutter's built-in primitives. No external dependencies.
 
-> Based on my article [Pragmatic state handling in Flutter](https://medium.com/@erlendf/pragmatic-state-handling-in-flutter-d8c9bf5d7d2)
+> See my Medium article [From ValueNotifier to Cubit-inspired state management](https://medium.com/@erlendf/from-valuenotifier-to-cubit-inspired-a-pragmatic-evolution-80eea6dba605) for more info
 
 ## Components
 
