@@ -1,9 +1,9 @@
-import 'package:example/repository/auth_repository.dart';
 import 'package:example/home_page/home_page.dart';
 import 'package:example/home_page/home_page_logic.dart';
 import 'package:example/home_page/home_page_state.dart';
 import 'package:example/login/login_logic.dart';
 import 'package:example/login/login_state.dart';
+import 'package:example/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
 
@@ -34,7 +34,45 @@ class MyApp extends StatelessWidget {
               logic: HomePageLogic(authRepository),
               child: child,
             ),
-      ], child: const HomePage()),
+      ], child: const ErrorListenerWrapper()),
+    );
+  }
+}
+
+class ErrorListenerWrapper extends StatelessWidget {
+  const ErrorListenerWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final homePageLogic = context.logic<HomePageLogic, HomePageState>();
+
+    return MuListener<HomePageState>(
+      logic: homePageLogic,
+      listener: (context, state) {
+        if (state.status == HomePageStatus.error) {
+          String message = switch (state.messageType) {
+            HomePageMessage.networkError => '🌐 Network error occurred',
+            HomePageMessage.incrementError => '🔢 Counter error occurred',
+            _ => '⚠️ An unexpected error occurred',
+          };
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              backgroundColor: Colors.red,
+              action: SnackBarAction(
+                label: 'Dismiss',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      },
+      listenWhen: (previous, current) => current.status == HomePageStatus.error,
+      child: const HomePage(),
     );
   }
 }

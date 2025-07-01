@@ -11,6 +11,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 - **`MuMultiBuilder`** - Listen to multiple `MuLogic` instances and rebuild when any of them change.
 - **`MuProvider<L, S>`** - Provides `MuLogic` instances down the widget tree using `InheritedWidget`.
 - **`MuMultiProvider`** - Convenience widget for nesting multiple `MuProvider` widgets cleanly.
+- **`MuListener<L>`** - Listen to state changes and perform side effects (like showing dialogs) without rebuilding the UI. Similar to `BlocListener`.
 - **`context.logic<L, S>()`** - Extension method to access `MuLogic` instances from the widget context.
 - **`MuComparable`** - Mixin for state classes to enable equality comparisons via `props` list. A lightweight alternative to the `Equatable` package.
 
