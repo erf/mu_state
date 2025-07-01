@@ -16,7 +16,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 - **`MuConsumer<S>`** - Combines builder and listener (like `BlocConsumer`)
 - **`MuProvider<T>`** - Provides values down the widget tree (like `Provider` or `BlocProvider`)
 
-Additional widgets are available for handling multiple states or providers: `MuMultiBuilder`, `MuMultiListener`, and `MuMultiProvider`. See the [Components](#components) section for details.
+Additional widgets are available for handling multiple states or providers: `MuMultiBuilder`, `MuMultiListener`, and `MuMultiProvider`. The `MuComparable` mixin is also available for state equality comparison. See the [Components](#components) section for details.
 
 ## Usage
 
@@ -180,11 +180,27 @@ MuBuilder<CounterState>(
 )
 ```
 
+### MuComparable
+
+`MuComparable` is a mixin that provides equality comparison for state classes. It's a lightweight alternative to packages like Equatable and helps `MuBuilder` and other listeners determine when to rebuild.
+
+```dart
+class CounterState with MuComparable {
+  final int counter;
+  final String? error;
+
+  const CounterState({required this.counter, this.error});
+
+  @override
+  List<Object?> get props => [counter, error];
+}
+```
+
+The `props` list should include all properties that determine equality. When state changes, widgets will only rebuild if the new state is different from the previous state based on these properties.
+
 ### MuListener
 
-`MuListener` is a Flutter widget which takes a `listener` and a `logic` and invokes the `listener` in response to state changes in the logic. It should be used for functionality that needs to occur once per state change such as navigation, showing a `SnackBar`, showing a `Dialog`, etc...
-
-`listener` is only called once for each state change and is a `void` function, unlike `builder` in `MuBuilder`. By default, the listener is NOT called on the initial state (`lazy: true`), but you can set `lazy: false` to call the listener immediately with the current state.
+`MuListener` performs side effects in response to state changes - navigation, showing dialogs, etc. The `listener` is called once per state change and by default NOT on initial state.
 
 ```dart
 MuListener<CounterState>(
@@ -196,22 +212,7 @@ MuListener<CounterState>(
       );
     }
   },
-  child: Container(),
-)
-```
-
-For fine-grained control over when the `listener` function is called an optional `listenWhen` can be provided. `listenWhen` takes the previous state and current state and returns a boolean. If `listenWhen` returns true, `listener` will be called with `state`. If `listenWhen` returns false, `listener` will not be called with `state`.
-
-```dart
-MuListener<CounterState>(
-  listenWhen: (previousState, state) {
-    // return true/false to determine whether or not
-    // to call listener with state
-    return previousState.error != state.error;
-  },
-  listener: (context, state) {
-    // do stuff here based on state
-  },
+  listenWhen: (prev, curr) => prev.error != curr.error,
   child: Container(),
 )
 ```
@@ -223,32 +224,20 @@ MuListener<CounterState>(
 You provide the instance to `MuProvider` via the `value` parameter. `MuProvider` will automatically handle disposing the value when the provider is disposed (if it implements `ChangeNotifier`, which `MuLogic` does).
 
 ```dart
-// Provide logic instances
 MuProvider<CounterLogic>(
   value: CounterLogic(),
   child: CounterPage(),
 );
-
-// Provide repositories or services
-MuProvider<AuthRepository>(
-  value: AuthRepository(),
-  child: MyApp(),
-);
 ```
 
-then from anywhere in the subtree you can retrieve the instances:
+Access from anywhere in the subtree:
 
 ```dart
-// Access logic
+// For MuLogic instances
 final logic = context.logic<CounterLogic>();
 
-// Access repository  
-final authRepo = context.logic<AuthRepository>();
-// or more semantically:
-final authRepo = MuProvider.of<AuthRepository>(context);
-
-// Use the logic
-logic.increment();
+// For any type
+final repo = context.read<AuthRepository>();
 ```
 
 ### MuMultiProvider
@@ -339,7 +328,7 @@ MuMultiListener(
 
 ### MuConsumer
 
-`MuConsumer` is a Flutter widget which combines `MuBuilder` and `MuListener` into one. `MuConsumer` exposes a `builder` and `listener` in order to react to new states. `MuConsumer` is analogous to a nested `MuListener` and `MuBuilder` but reduces the amount of boilerplate needed.
+`MuConsumer` combines `MuBuilder` and `MuListener` functionality in a single widget.
 
 ```dart
 MuConsumer<CounterState>(
