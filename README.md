@@ -18,6 +18,15 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 
 Additional widgets are available for handling multiple states or providers: `MuMultiBuilder`, `MuMultiListener`, and `MuMultiProvider`. The `MuComparable` mixin is also available for state equality comparison. See the [Components](#components) section for details.
 
+## Screenshots
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/idle.png" width="200"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/success.png" width="200"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/loading.png" width="200"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/error.png" width="200"/>
+</div>
+
 ## Usage
 
 Let's create a simple counter to see how `mu_state` works:
