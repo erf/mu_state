@@ -279,4 +279,48 @@ MuMultiBuilder(
 )
 ```
 
+### MuMultiListener
+
+`MuMultiListener` is a Flutter widget that merges multiple `MuListener` widgets into one. `MuMultiListener` improves the readability and eliminates the need to nest multiple `MuListener`s. By using `MuMultiListener` we can go from:
+
+```dart
+MuListener<StateA>(
+  logic: logicA,
+  listener: (context, state) {
+    // handle state A changes
+  },
+  child: MuListener<StateB>(
+    logic: logicB,
+    listener: (context, state) {
+      // handle state B changes
+    },
+    child: ChildWidget(),
+  ),
+)
+```
+
+to:
+
+```dart
+MuMultiListener(
+  listeners: [
+    (child) => MuListener<StateA>(
+      logic: logicA,
+      listener: (context, state) {
+        // handle state A changes
+      },
+      child: child,
+    ),
+    (child) => MuListener<StateB>(
+      logic: logicB,
+      listener: (context, state) {
+        // handle state B changes
+      },
+      child: child,
+    ),
+  ],
+  child: ChildWidget(),
+)
+```
+
 See the [example project](example/) for a complete implementation with more features.
