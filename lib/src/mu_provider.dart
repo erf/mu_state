@@ -1,11 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:mu_state/mu_state.dart';
 
-/// A provider widget that makes a [ValueNotifier] logic available to descendant
+/// A provider widget that makes a [MuLogic] logic available to descendant
 /// widgets.
 ///
 /// This is purely for dependency injection - it does not rebuild when the
 /// logic's state changes. Use [MuBuilder] for listening to state changes.
-class MuProvider<L extends ValueNotifier<S>, S> extends InheritedWidget {
+class MuProvider<L extends MuLogic<S>, S> extends InheritedWidget {
   /// Creates a [MuProvider] that provides a logic instance to descendant widgets.
   const MuProvider({
     super.key,
@@ -24,7 +25,7 @@ class MuProvider<L extends ValueNotifier<S>, S> extends InheritedWidget {
 
   /// Finds the closest [MuProvider] ancestor and returns its logic.
   /// Throws if no [MuProvider] of type [L] is found in the widget tree.
-  static L of<L extends ValueNotifier<S>, S>(BuildContext context) {
+  static L of<L extends MuLogic<S>, S>(BuildContext context) {
     final provider =
         context.dependOnInheritedWidgetOfExactType<MuProvider<L, S>>();
     if (provider == null) {
@@ -37,7 +38,7 @@ class MuProvider<L extends ValueNotifier<S>, S> extends InheritedWidget {
   }
 
   /// Finds the closest [MuProvider] ancestor and returns its logic, or null if not found.
-  static L? maybeOf<L extends ValueNotifier<S>, S>(BuildContext context) {
+  static L? maybeOf<L extends MuLogic<S>, S>(BuildContext context) {
     final provider =
         context.dependOnInheritedWidgetOfExactType<MuProvider<L, S>>();
     return provider?.logic;

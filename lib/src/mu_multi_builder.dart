@@ -1,9 +1,10 @@
 import 'package:flutter/widgets.dart';
+import 'package:mu_state/mu_state.dart';
 
 /// Listen to a list of [ValueNotifier] objects and get notified on any change.
 class MuMultiBuilder extends StatelessWidget {
-  /// List of [ValueNotifier]s to listen to.
-  final List<ValueNotifier> listenables;
+  /// List of [MuLogic]s to listen to.
+  final List<MuLogic> listenables;
 
   /// The builder is called when the value of any of the [listenables] changes and is
   /// passed the [BuildContext] and the list of values.
@@ -16,7 +17,7 @@ class MuMultiBuilder extends StatelessWidget {
   const MuMultiBuilder({
     super.key,
 
-    /// List of [ValueNotifier] classes to listen to.
+    /// List of [MuLogic] classes to listen to.
     required this.listenables,
 
     /// The builder function is called when the value of any of the [listenables] changes.
