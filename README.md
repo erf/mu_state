@@ -14,7 +14,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 - **`MuBuilder<S>`** - Rebuilds UI on state changes (like `BlocBuilder`)
 - **`MuListener<S>`** - Performs side effects (like `BlocListener`)
 - **`MuConsumer<S>`** - Combines builder and listener (like `BlocConsumer`)
-- **`MuProvider<L,S>`** - Provides logic down the widget tree (like `BlocProvider`)
+- **`MuProvider<T>`** - Provides values down the widget tree (like `Provider` or `BlocProvider`)
 
 ## Usage
 
@@ -78,8 +78,8 @@ class CounterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MuProvider<CounterLogic, CounterState>(
-        logic: CounterLogic(),
+      home: MuProvider<CounterLogic>(
+        value: CounterLogic(),
         child: CounterPage(),
       ),
     );
@@ -251,8 +251,8 @@ MuListener<CounterState>(
 In most cases, `MuProvider` should be used to create new logic instances which will be made available to the rest of the subtree. In this case, since `MuProvider` is responsible for creating the logic, it will automatically handle disposing it.
 
 ```dart
-MuProvider<CounterLogic, CounterState>(
-  logic: CounterLogic(),
+MuProvider<CounterLogic>(
+  value: CounterLogic(),
   child: CounterPage(),
 );
 ```
@@ -272,12 +272,12 @@ logic.increment();
 `MuMultiProvider` is a Flutter widget that merges multiple `MuProvider` widgets into one. `MuMultiProvider` improves the readability and eliminates the need to nest multiple `MuProviders`. By using `MuMultiProvider` we can go from:
 
 ```dart
-MuProvider<LogicA, StateA>(
-  logic: LogicA(),
-  child: MuProvider<LogicB, StateB>(
-    logic: LogicB(),
-    child: MuProvider<LogicC, StateC>(
-      logic: LogicC(),
+MuProvider<LogicA>(
+  value: LogicA(),
+  child: MuProvider<LogicB>(
+    value: LogicB(),
+    child: MuProvider<LogicC>(
+      value: LogicC(),
       child: ChildA(),
     )
   )
@@ -288,9 +288,9 @@ to:
 
 ```dart
 MuMultiProvider([
-  (child) => MuProvider<LogicA, StateA>(logic: LogicA(), child: child),
-  (child) => MuProvider<LogicB, StateB>(logic: LogicB(), child: child),
-  (child) => MuProvider<LogicC, StateC>(logic: LogicC(), child: child),
+  (child) => MuProvider<LogicA>(value: LogicA(), child: child),
+  (child) => MuProvider<LogicB>(value: LogicB(), child: child),
+  (child) => MuProvider<LogicC>(value: LogicC(), child: child),
 ], child: ChildA())
 ```
 

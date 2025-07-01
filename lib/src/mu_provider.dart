@@ -1,46 +1,81 @@
 import 'package:flutter/widgets.dart';
-import 'package:mu_state/mu_state.dart';
 
-/// A provider widget that makes a [MuLogic] logic available to descendant
-/// widgets.
+/// A provider widget that makes a value available to descendant widgets.
 ///
 /// This is purely for dependency injection - it does not rebuild when the
-/// logic's state changes. Use [MuBuilder] for listening to state changes.
-class MuProvider<L extends MuLogic<S>, S> extends InheritedWidget {
-  /// Creates a [MuProvider] that provides a logic instance to descendant widgets.
+/// value changes. Use [MuBuilder] for listening to state changes.
+///
+/// If the provided value implements [ChangeNotifier] (like [MuLogic]),
+/// it will be automatically disposed when this provider is disposed.
+class MuProvider<T> extends StatefulWidget {
+  /// Creates a [MuProvider] that provides a value to descendant widgets.
   const MuProvider({
     super.key,
-    required this.logic,
+    required this.value,
+    required this.child,
+  });
+
+  /// The value provided by this provider.
+  final T value;
+
+  /// The widget below this widget in the tree.
+  final Widget child;
+
+  @override
+  State<MuProvider<T>> createState() => _MuProviderState<T>();
+
+  /// Finds the closest [MuProvider] ancestor and returns its value.
+  /// Throws if no [MuProvider] of type [T] is found in the widget tree.
+  static T of<T>(BuildContext context) {
+    final provider =
+        context.dependOnInheritedWidgetOfExactType<_InheritedMuProvider<T>>();
+    if (provider == null) {
+      throw FlutterError(
+        'MuProvider.of<$T>() called with a context that does not contain a MuProvider of type $T.\n'
+        'Make sure that $T is an ancestor of the widget that calls MuProvider.of<$T>()',
+      );
+    }
+    return provider.value;
+  }
+
+  /// Finds the closest [MuProvider] ancestor and returns its value, or null if not found.
+  static T? maybeOf<T>(BuildContext context) {
+    final provider =
+        context.dependOnInheritedWidgetOfExactType<_InheritedMuProvider<T>>();
+    return provider?.value;
+  }
+}
+
+class _MuProviderState<T> extends State<MuProvider<T>> {
+  @override
+  void dispose() {
+    // Auto-dispose if the value is a ChangeNotifier (like MuLogic)
+    if (widget.value is ChangeNotifier) {
+      (widget.value as ChangeNotifier).dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _InheritedMuProvider<T>(
+      value: widget.value,
+      child: widget.child,
+    );
+  }
+}
+
+class _InheritedMuProvider<T> extends InheritedWidget {
+  const _InheritedMuProvider({
+    required this.value,
     required super.child,
   });
 
-  /// The logic instance provided by this provider.
-  final L logic;
+  final T value;
 
   @override
-  bool updateShouldNotify(covariant MuProvider<L, S> oldWidget) {
-    // Only notify if the logic instance changes, not its state
-    return logic != oldWidget.logic;
-  }
-
-  /// Finds the closest [MuProvider] ancestor and returns its logic.
-  /// Throws if no [MuProvider] of type [L] is found in the widget tree.
-  static L of<L extends MuLogic<S>, S>(BuildContext context) {
-    final provider =
-        context.dependOnInheritedWidgetOfExactType<MuProvider<L, S>>();
-    if (provider == null) {
-      throw FlutterError(
-        'MuProvider.of<$L>() called with a context that does not contain a MuProvider of type $L.\n'
-        'Make sure that $L is an ancestor of the widget that calls MuProvider.of<$L>()',
-      );
-    }
-    return provider.logic;
-  }
-
-  /// Finds the closest [MuProvider] ancestor and returns its logic, or null if not found.
-  static L? maybeOf<L extends MuLogic<S>, S>(BuildContext context) {
-    final provider =
-        context.dependOnInheritedWidgetOfExactType<MuProvider<L, S>>();
-    return provider?.logic;
+  bool updateShouldNotify(covariant _InheritedMuProvider<T> oldWidget) {
+    // Only notify if the value instance changes
+    return value != oldWidget.value;
   }
 }

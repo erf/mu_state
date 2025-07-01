@@ -2,7 +2,6 @@ import 'package:example/home_page/home_page.dart';
 import 'package:example/home_page/home_page_logic.dart';
 import 'package:example/home_page/home_page_state.dart';
 import 'package:example/login/login_logic.dart';
-import 'package:example/login/login_state.dart';
 import 'package:example/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mu_state/mu_state.dart';
@@ -26,12 +25,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: MuMultiProvider([
-        (child) => MuProvider<LoginLogic, LoginState>(
-              logic: LoginLogic(authRepository),
+        (child) => MuProvider<LoginLogic>(
+              value: LoginLogic(authRepository),
               child: child,
             ),
-        (child) => MuProvider<HomePageLogic, HomePageState>(
-              logic: HomePageLogic(authRepository),
+        (child) => MuProvider<HomePageLogic>(
+              value: HomePageLogic(authRepository),
               child: child,
             ),
       ], child: const ErrorListenerWrapper()),
@@ -44,7 +43,7 @@ class ErrorListenerWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homePageLogic = context.logic<HomePageLogic, HomePageState>();
+    final homePageLogic = context.logic<HomePageLogic>();
 
     return MuListener<HomePageState>(
       logic: homePageLogic,

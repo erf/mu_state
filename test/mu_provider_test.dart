@@ -31,11 +31,11 @@ void main() {
       late TestLogic retrievedLogic;
 
       await tester.pumpWidget(
-        MuProvider<TestLogic, TestState>(
-          logic: logic,
+        MuProvider<TestLogic>(
+          value: logic,
           child: Builder(
             builder: (context) {
-              retrievedLogic = context.logic<TestLogic, TestState>();
+              retrievedLogic = context.logic<TestLogic>();
               return const SizedBox();
             },
           ),
@@ -52,7 +52,7 @@ void main() {
         Builder(
           builder: (context) {
             expect(
-              () => context.logic<TestLogic, TestState>(),
+              () => context.logic<TestLogic>(),
               throwsA(isA<FlutterError>()),
             );
             return const SizedBox();
@@ -67,7 +67,7 @@ void main() {
       await tester.pumpWidget(
         Builder(
           builder: (context) {
-            final logic = context.maybeLogic<TestLogic, TestState>();
+            final logic = context.maybeLogic<TestLogic>();
             expect(logic, isNull);
             return const SizedBox();
           },
@@ -81,12 +81,12 @@ void main() {
       int buildCount = 0;
 
       await tester.pumpWidget(
-        MuProvider<TestLogic, TestState>(
-          logic: logic,
+        MuProvider<TestLogic>(
+          value: logic,
           child: Builder(
             builder: (context) {
               buildCount++;
-              final currentLogic = context.logic<TestLogic, TestState>();
+              final currentLogic = context.logic<TestLogic>();
               return Directionality(
                 textDirection: TextDirection.ltr,
                 child: Text('${currentLogic.value.value}'),
@@ -115,13 +115,13 @@ void main() {
       final logic2 = TestLogic(2);
 
       await tester.pumpWidget(
-        MuProvider<TestLogic, TestState>(
-          logic: logic1,
-          child: MuProvider<TestLogic, TestState>(
-            logic: logic2,
+        MuProvider<TestLogic>(
+          value: logic1,
+          child: MuProvider<TestLogic>(
+            value: logic2,
             child: Builder(
               builder: (context) {
-                final retrievedLogic = context.logic<TestLogic, TestState>();
+                final retrievedLogic = context.logic<TestLogic>();
                 // Should get the closest provider (logic2)
                 expect(retrievedLogic, same(logic2));
                 expect(retrievedLogic.value.value, 2);
@@ -139,12 +139,12 @@ void main() {
       int buildCount = 0;
 
       Widget buildProvider(TestLogic logicInstance) {
-        return MuProvider<TestLogic, TestState>(
-          logic: logicInstance,
+        return MuProvider<TestLogic>(
+          value: logicInstance,
           child: Builder(
             builder: (context) {
               buildCount++;
-              final currentLogic = context.logic<TestLogic, TestState>();
+              final currentLogic = context.logic<TestLogic>();
               return Directionality(
                 textDirection: TextDirection.ltr,
                 child: Text('${currentLogic.value.value}'),
@@ -173,11 +173,11 @@ void main() {
       final logic = TestLogic(42);
 
       await tester.pumpWidget(
-        MuProvider<TestLogic, TestState>(
-          logic: logic,
+        MuProvider<TestLogic>(
+          value: logic,
           child: Builder(
             builder: (context) {
-              final retrievedLogic = context.logic<TestLogic, TestState>();
+              final retrievedLogic = context.logic<TestLogic>();
               expect(retrievedLogic.value.value, 42);
               return const SizedBox();
             },
@@ -190,11 +190,11 @@ void main() {
       final logic = TestLogic(24);
 
       await tester.pumpWidget(
-        MuProvider<TestLogic, TestState>(
-          logic: logic,
+        MuProvider<TestLogic>(
+          value: logic,
           child: Builder(
             builder: (context) {
-              final retrievedLogic = context.maybeLogic<TestLogic, TestState>();
+              final retrievedLogic = context.maybeLogic<TestLogic>();
               expect(retrievedLogic?.value.value, 24);
               return const SizedBox();
             },

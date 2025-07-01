@@ -8,8 +8,8 @@ import 'package:flutter/widgets.dart';
 /// Usage:
 /// ```dart
 /// MuMultiProvider([
-///   (child) => MuProvider<AuthLogic, AuthState>(logic: authLogic, child: child),
-///   (child) => MuProvider<LoginLogic, LoginState>(logic: loginLogic, child: child),
+///   (child) => MuProvider<AuthLogic>(value: authLogic, child: child),
+///   (child) => MuProvider<LoginLogic>(value: loginLogic, child: child),
 /// ], child: LoginPage())
 /// ```
 class MuMultiProvider extends StatelessWidget {

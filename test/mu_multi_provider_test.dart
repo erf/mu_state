@@ -64,18 +64,18 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: MuMultiProvider([
-            (child) => MuProvider<TestLogic, TestState>(
-                  logic: firstLogic,
+            (child) => MuProvider<TestLogic>(
+                  value: firstLogic,
                   child: child,
                 ),
-            (child) => MuProvider<SecondTestLogic, SecondTestState>(
-                  logic: secondLogic,
+            (child) => MuProvider<SecondTestLogic>(
+                  value: secondLogic,
                   child: child,
                 ),
           ], child: Builder(
             builder: (context) {
-              final first = context.logic<TestLogic, TestState>();
-              final second = context.logic<SecondTestLogic, SecondTestState>();
+              final first = context.logic<TestLogic>();
+              final second = context.logic<SecondTestLogic>();
 
               capturedFirstValue = first.value.value;
               capturedSecondValue = second.value.count;
@@ -106,19 +106,19 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: MuMultiProvider([
-            (child) => MuProvider<TestLogic, TestState>(
-                  logic: firstLogic,
+            (child) => MuProvider<TestLogic>(
+                  value: firstLogic,
                   child: child,
                 ),
-            (child) => MuProvider<SecondTestLogic, SecondTestState>(
-                  logic: secondLogic,
+            (child) => MuProvider<SecondTestLogic>(
+                  value: secondLogic,
                   child: child,
                 ),
           ], child: Builder(
             builder: (context) {
               // Both should be accessible
-              final first = context.logic<TestLogic, TestState>();
-              final second = context.logic<SecondTestLogic, SecondTestState>();
+              final first = context.logic<TestLogic>();
+              final second = context.logic<SecondTestLogic>();
 
               expect(first, equals(firstLogic));
               expect(second, equals(secondLogic));

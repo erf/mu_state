@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logic = context.logic<HomePageLogic, HomePageState>();
+    final logic = context.logic<HomePageLogic>();
 
     return Scaffold(
       appBar: AppBar(

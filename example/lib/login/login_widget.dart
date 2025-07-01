@@ -30,7 +30,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final loginLogic = context.logic<LoginLogic, LoginState>();
+    final loginLogic = context.logic<LoginLogic>();
 
     return MuBuilder<LoginState>(
       valueListenable: loginLogic,
