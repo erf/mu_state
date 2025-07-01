@@ -1,3 +1,26 @@
+## 2.0.0
+
+### New Features
+- **Added `MuListener<S>`** - Perform side effects in response to state changes (navigation, dialogs, etc.)
+- **Added `MuMultiListener`** - Listen to multiple state changes with a single widget
+- **Added `MuConsumer<S>`** - Combines `MuBuilder` and `MuListener` functionality
+- **Enhanced `MuProvider<T>`** - Now fully generic, works with any type (not just logic classes)
+- **Improved documentation** - Comprehensive README with better examples and usage patterns
+
+### Breaking Changes
+- **`MuProvider<T>`** is now generic for any type instead of `MuProvider<L, S>`
+- Constructor parameter renamed from `logic` to `value` to reflect generic nature
+
+### Improvements
+- **Auto-disposal** - `MuProvider` automatically disposes `ChangeNotifier` instances
+
+### Architecture
+This release represents the mature, stable API for `mu_state`. The complete widget set now provides:
+- State management with `MuLogic<S>` and `MuBuilder<S>`
+- Side effects with `MuListener<S>` and `MuConsumer<S>`  
+- Dependency injection with generic `MuProvider<T>`
+- Multi-state handling with `MuMultiBuilder` and `MuMultiListener`
+
 ## 1.1.0
 
 - **Added `MuMultiProvider`** - Clean nesting of multiple providers
