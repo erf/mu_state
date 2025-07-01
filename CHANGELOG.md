@@ -1,3 +1,7 @@
+## 2.0.0+1
+
+- Improved documentation and examples
+
 ## 2.0.0
 
 ### New Features
