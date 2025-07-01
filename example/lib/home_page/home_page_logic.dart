@@ -33,6 +33,7 @@ class HomePageLogic extends MuLogic<HomePageState> {
       counter: value.counter + 1,
       messageType: HomePageMessage.counterIncremented,
       messageData: (value.counter + 1).toString(),
+      status: HomePageStatus.idle,
     );
   }
 
@@ -41,6 +42,7 @@ class HomePageLogic extends MuLogic<HomePageState> {
       counter: value.counter - 1,
       messageType: HomePageMessage.counterDecremented,
       messageData: (value.counter - 1).toString(),
+      status: HomePageStatus.idle,
     );
   }
 
@@ -49,6 +51,7 @@ class HomePageLogic extends MuLogic<HomePageState> {
       counter: 0,
       messageType: HomePageMessage.counterReset,
       messageData: null,
+      status: HomePageStatus.idle,
     );
   }
 

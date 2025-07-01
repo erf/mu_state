@@ -70,7 +70,9 @@ class ErrorListenerWrapper extends StatelessWidget {
           );
         }
       },
-      listenWhen: (previous, current) => current.status == HomePageStatus.error,
+      listenWhen: (previous, current) =>
+          previous.status != HomePageStatus.error &&
+          current.status == HomePageStatus.error,
       child: const HomePage(),
     );
   }
