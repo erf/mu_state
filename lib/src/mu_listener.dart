@@ -44,9 +44,11 @@ class _MuListenerState<S> extends State<MuListener<S>> {
     final shouldListen = widget.listenWhen?.call(_previous, current) ?? true;
 
     if (shouldListen) {
-      _previous = current;
       widget.listener(context, current);
     }
+
+    // Always update _previous to reflect the actual previous state
+    _previous = current;
   }
 
   @override

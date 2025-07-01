@@ -111,15 +111,18 @@ class _MuConsumerState<S> extends State<MuConsumer<S>> {
     final current = widget.logic.value;
 
     final shouldListen = widget.listenWhen?.call(_previous, current) ?? true;
+    final shouldBuild = widget.buildWhen?.call(_previous, current) ?? true;
+
     if (shouldListen) {
       widget.listener(context, current);
     }
 
-    final shouldBuild = widget.buildWhen?.call(_previous, current) ?? true;
     if (shouldBuild) {
-      _previous = current;
       setState(() {});
     }
+
+    // Always update _previous to reflect the actual previous state
+    _previous = current;
   }
 
   @override
