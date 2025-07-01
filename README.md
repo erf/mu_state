@@ -13,6 +13,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 - **`MuLogic<S>`** - Your business logic (like `Cubit`)
 - **`MuBuilder<S>`** - Rebuilds UI on state changes (like `BlocBuilder`)
 - **`MuListener<S>`** - Performs side effects (like `BlocListener`)
+- **`MuConsumer<S>`** - Combines builder and listener (like `BlocConsumer`)
 - **`MuProvider<L,S>`** - Provides logic down the widget tree (like `BlocProvider`)
 
 ## Usage
@@ -141,6 +142,35 @@ class CounterPage extends StatelessWidget {
 ```
 
 At this point we have successfully separated our presentational layer from our business logic layer. Notice that `CounterPage` knows nothing about what happens when a user taps the buttons. The widget simply notifies the `CounterLogic` that the user has pressed increment.
+
+> **Alternative:** You could also use `MuConsumer` to combine the listener and builder functionality:
+> ```dart
+> MuConsumer<CounterState>(
+>   logic: logic,
+>   listener: (context, state) {
+>     if (state.error != null) {
+>       ScaffoldMessenger.of(context).showSnackBar(
+>         SnackBar(content: Text('⚠️ ${state.error}')),
+>       );
+>     }
+>   },
+>   listenWhen: (prev, curr) => prev.error != curr.error && curr.error != null,
+>   builder: (context, state, child) {
+>     return Column(
+>       children: [
+>         Text('Counter: ${state.counter}'),
+>         if (state.isLoading) CircularProgressIndicator(),
+>         SizedBox(height: 20),
+>         ElevatedButton(
+>           onPressed: () => logic.increment(),
+>           child: Text('Increment'),
+>         ),
+>         // ... rest of buttons
+>       ],
+>     );
+>   },
+> )
+> ```
 
 ## Components
 
@@ -320,6 +350,51 @@ MuMultiListener(
     ),
   ],
   child: ChildWidget(),
+)
+```
+
+### MuConsumer
+
+`MuConsumer` is a Flutter widget which combines `MuBuilder` and `MuListener` into one. `MuConsumer` exposes a `builder` and `listener` in order to react to new states. `MuConsumer` is analogous to a nested `MuListener` and `MuBuilder` but reduces the amount of boilerplate needed.
+
+```dart
+MuConsumer<CounterState>(
+  logic: logic,
+  listener: (context, state) {
+    if (state.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${state.error}')),
+      );
+    }
+  },
+  builder: (context, state, child) {
+    return Text('Counter: ${state.counter}');
+  },
+)
+```
+
+An optional `listenWhen` and `buildWhen` can be implemented for more granular control over when `listener` and `builder` are called. The `listenWhen` and `buildWhen` functions take the previous state and the current state and return a `bool` which determines whether or not the `listener` or `builder` function will be invoked.
+
+```dart
+MuConsumer<CounterState>(
+  logic: logic,
+  listenWhen: (previous, current) {
+    // return true/false to determine whether or not
+    // to invoke listener with state
+    return previous.error != current.error;
+  },
+  listener: (context, state) {
+    // do stuff here based on state
+  },
+  buildWhen: (previous, current) {
+    // return true/false to determine whether or not
+    // to rebuild the widget with state
+    return previous.counter != current.counter;
+  },
+  builder: (context, state, child) {
+    // return widget here based on state
+    return Text('Counter: ${state.counter}');
+  }
 )
 ```
 
