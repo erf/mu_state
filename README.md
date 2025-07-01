@@ -154,7 +154,6 @@ At this point we have successfully separated our presentational layer from our b
 `MuLogic<S>` is a typedef for `ValueNotifier<S>` that serves as the foundation for your business logic. It manages state and notifies listeners when the state changes. `MuLogic` is essentially an alias that makes the code more semantic for state management purposes.
 
 ```dart
-// MuLogic<S> is just a typedef for ValueNotifier<S>
 class CounterLogic extends MuLogic<CounterState> {
   CounterLogic() : super(const CounterState(counter: 0, isLoading: false));
 
@@ -173,11 +172,9 @@ Since `MuLogic` extends `ValueNotifier`, you get all the familiar methods like `
 See `MuListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
 
 ```dart
-// MuBuilder<S> is just a typedef for ValueListenableBuilder<S>
 MuBuilder<CounterState>(
   valueListenable: logic,
   builder: (context, state, child) {
-    // return widget here based on state
     return Text('Counter: ${state.counter}');
   }
 )
