@@ -93,7 +93,7 @@ class CounterApp extends StatelessWidget {
 class CounterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final logic = context.logic<CounterLogic, CounterState>();
+    final logic = context.logic<CounterLogic>();
     
     return Scaffold(
       appBar: AppBar(title: Text('Counter')),
@@ -143,34 +143,7 @@ class CounterPage extends StatelessWidget {
 
 At this point we have successfully separated our presentational layer from our business logic layer. Notice that `CounterPage` knows nothing about what happens when a user taps the buttons. The widget simply notifies the `CounterLogic` that the user has pressed increment.
 
-> **Alternative:** You could also use `MuConsumer` to combine the listener and builder functionality:
-> ```dart
-> MuConsumer<CounterState>(
->   logic: logic,
->   listener: (context, state) {
->     if (state.error != null) {
->       ScaffoldMessenger.of(context).showSnackBar(
->         SnackBar(content: Text('⚠️ ${state.error}')),
->       );
->     }
->   },
->   listenWhen: (prev, curr) => prev.error != curr.error && curr.error != null,
->   builder: (context, state, child) {
->     return Column(
->       children: [
->         Text('Counter: ${state.counter}'),
->         if (state.isLoading) CircularProgressIndicator(),
->         SizedBox(height: 20),
->         ElevatedButton(
->           onPressed: () => logic.increment(),
->           child: Text('Increment'),
->         ),
->         // ... rest of buttons
->       ],
->     );
->   },
-> )
-> ```
+> **Alternative:** You could also use `MuConsumer` to combine the listener and builder functionality in a single widget. See the [MuConsumer](#muconsumer) section below for details.
 
 ## Components
 
@@ -246,22 +219,34 @@ MuListener<CounterState>(
 
 ### MuProvider
 
-`MuProvider` is a Flutter widget which provides a logic instance to its children via `context.logic<T>()`. It is used as a dependency injection (DI) widget so that a single instance of a logic can be provided to multiple widgets within a subtree.
+`MuProvider` is a Flutter widget which provides any value to its children via dependency injection. While originally designed for `MuLogic` instances, it's now fully generic and can provide any type - making it perfect for injecting repositories, services, or other dependencies throughout your widget tree.
 
-In most cases, `MuProvider` should be used to create new logic instances which will be made available to the rest of the subtree. In this case, since `MuProvider` is responsible for creating the logic, it will automatically handle disposing it.
+You provide the instance to `MuProvider` via the `value` parameter. `MuProvider` will automatically handle disposing the value when the provider is disposed (if it implements `ChangeNotifier`, which `MuLogic` does).
 
 ```dart
+// Provide logic instances
 MuProvider<CounterLogic>(
   value: CounterLogic(),
   child: CounterPage(),
 );
+
+// Provide repositories or services
+MuProvider<AuthRepository>(
+  value: AuthRepository(),
+  child: MyApp(),
+);
 ```
 
-then from `CounterPage` we can retrieve the `CounterLogic` instance with:
+then from anywhere in the subtree you can retrieve the instances:
 
 ```dart
-// Access the logic
-final logic = context.logic<CounterLogic, CounterState>();
+// Access logic
+final logic = context.logic<CounterLogic>();
+
+// Access repository  
+final authRepo = context.logic<AuthRepository>();
+// or more semantically:
+final authRepo = MuProvider.of<AuthRepository>(context);
 
 // Use the logic
 logic.increment();
