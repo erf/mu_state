@@ -6,7 +6,7 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 
 ## Overview
 
-`mu_state` provides a lightweight alternative to Bloc/Cubit using Flutter's built-in `ValueNotifier` and `InheritedWidget`. It follows the same patterns you know from Bloc but with zero dependencies and minimal boilerplate.
+`mu_state` provides a lightweight alternative to Bloc/Cubit using Flutter's built-in `ValueNotifier`, `ValueListenableBuilder` and `InheritedWidget`. It follows the same patterns you know from Bloc but with zero dependencies and minimal boilerplate.
 
 **Key concepts:**
 
@@ -15,6 +15,8 @@ Minimal Cubit-inspired state management using Flutter's built-in primitives. No 
 - **`MuListener<S>`** - Performs side effects (like `BlocListener`)
 - **`MuConsumer<S>`** - Combines builder and listener (like `BlocConsumer`)
 - **`MuProvider<T>`** - Provides values down the widget tree (like `Provider` or `BlocProvider`)
+
+Additional widgets are available for handling multiple states or providers: `MuMultiBuilder`, `MuMultiListener`, and `MuMultiProvider`. See the [Components](#components) section for details.
 
 ## Usage
 
