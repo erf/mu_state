@@ -1,7 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:mu_state/mu_state.dart';
 
-/// Extension on [BuildContext] to provide convenient access to logic instances.
+/// Extension on [BuildContext] to provide convenient access to provided values.
+///
+/// This extension adds methods to easily access values provided by [MuProvider]
+/// ancestors in the widget tree, with specialized methods for [MuLogic] instances
+/// and generic methods for any type.
+///
+/// ```dart
+/// // Access MuLogic instances
+/// final logic = context.logic<CounterLogic>();
+///
+/// // Access any provided type
+/// final repository = context.read<AuthRepository>();
+/// ```
 extension MuContext on BuildContext {
   /// Finds the closest [MuProvider] ancestor and returns its logic.
   /// Throws if no [MuProvider] of type [L] is found in the widget tree.

@@ -200,7 +200,7 @@ The `props` list should include all properties that determine equality. When sta
 
 ### MuListener
 
-`MuListener` performs side effects in response to state changes - navigation, showing dialogs, etc. The `listener` is called once per state change and by default NOT on initial state.
+`MuListener` performs side effects in response to state changes - navigation, showing dialogs, etc. The `listener` is called once per state change and by default NOT on initial state (`lazy: true`). Set `lazy: false` to call the listener immediately with the current state.
 
 ```dart
 MuListener<CounterState>(
@@ -273,7 +273,7 @@ MuMultiProvider([
 
 ```dart
 MuMultiBuilder(
-  valueListenables: [logicA, logicB],
+  listenables: [logicA, logicB],
   builder: (context, values, child) {
     final stateA = values[0] as StateA;
     final stateB = values[1] as StateB;

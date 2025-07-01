@@ -1,5 +1,24 @@
-/// A lightweight mixin that provides equality comparison for state objects.
-/// This is a minimal alternative to the Equatable package.
+/// A lightweight mixin that provides equality comparison for state classes.
+///
+/// [MuComparable] is a minimal alternative to packages like Equatable and helps
+/// [MuBuilder] and other listeners determine when to rebuild by providing proper
+/// equality semantics for state objects.
+///
+/// ```dart
+/// class CounterState with MuComparable {
+///   final int counter;
+///   final String? error;
+///
+///   const CounterState({required this.counter, this.error});
+///
+///   @override
+///   List<Object?> get props => [counter, error];
+/// }
+/// ```
+///
+/// The [props] list should include all properties that determine equality.
+/// When state changes, widgets will only rebuild if the new state is different
+/// from the previous state based on these properties.
 mixin MuComparable {
   /// The list of properties that will be used to determine whether
   /// two instances are equal.

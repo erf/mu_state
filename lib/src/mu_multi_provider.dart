@@ -1,16 +1,32 @@
 import 'package:flutter/widgets.dart';
 
-/// A widget that provides multiple providers down the widget tree.
+/// A Flutter widget that merges multiple [MuProvider] widgets into one.
 ///
-/// This is a convenience widget that allows you to nest multiple providers
+/// [MuMultiProvider] improves readability and eliminates the need to nest multiple providers.
+/// This is a convenience widget that allows you to compose multiple providers
 /// without deeply nested widget trees.
 ///
-/// Usage:
+/// Instead of nesting providers like this:
+/// ```dart
+/// MuProvider<LogicA>(
+///   value: LogicA(),
+///   child: MuProvider<LogicB>(
+///     value: LogicB(),
+///     child: MuProvider<LogicC>(
+///       value: LogicC(),
+///       child: ChildWidget(),
+///     )
+///   )
+/// )
+/// ```
+///
+/// You can use [MuMultiProvider]:
 /// ```dart
 /// MuMultiProvider([
-///   (child) => MuProvider<AuthLogic>(value: authLogic, child: child),
-///   (child) => MuProvider<LoginLogic>(value: loginLogic, child: child),
-/// ], child: LoginPage())
+///   (child) => MuProvider<LogicA>(value: LogicA(), child: child),
+///   (child) => MuProvider<LogicB>(value: LogicB(), child: child),
+///   (child) => MuProvider<LogicC>(value: LogicC(), child: child),
+/// ], child: ChildWidget())
 /// ```
 class MuMultiProvider extends StatelessWidget {
   /// Creates a [MuMultiProvider] using provider builder functions.

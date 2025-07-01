@@ -1,29 +1,38 @@
 import 'package:flutter/widgets.dart';
 import 'package:mu_state/mu_state.dart';
 
-/// Listen to a list of [ValueNotifier] objects and get notified on any change.
+/// A Flutter widget that listens to multiple [MuLogic] instances and rebuilds when any of them change.
+///
+/// [MuMultiBuilder] is useful when you need to build UI that depends on multiple state sources.
+///
+/// ```dart
+/// MuMultiBuilder(
+///   listenables: [logicA, logicB],
+///   builder: (context, values, child) {
+///     final stateA = values[0] as StateA;
+///     final stateB = values[1] as StateB;
+///     return Text('A: ${stateA.value}, B: ${stateB.value}');
+///   },
+/// )
+/// ```
 class MuMultiBuilder extends StatelessWidget {
-  /// List of [MuLogic]s to listen to.
+  /// List of [MuLogic] instances to listen to.
   final List<MuLogic> listenables;
 
-  /// The builder is called when the value of any of the [listenables] changes and is
-  /// passed the [BuildContext] and the list of values.
+  /// The builder function called when any of the [listenables] changes.
+  /// It receives the [BuildContext], a list of current state values, and an optional child widget.
   final Widget Function(BuildContext context, List values, Widget? child)
       builder;
 
-  /// An optional [child] widget will passed to [builder].
+  /// An optional child widget that is passed to the [builder] function.
   final Widget? child;
 
   const MuMultiBuilder({
     super.key,
-
-    /// List of [MuLogic] classes to listen to.
     required this.listenables,
-
-    /// The builder function is called when the value of any of the [listenables] changes.
     required this.builder,
     this.child,
-  }) : assert(listenables.length != 0);
+  }) : assert(listenables.length > 0, 'listenables cannot be empty');
 
   @override
   Widget build(BuildContext context) {

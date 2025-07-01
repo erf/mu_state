@@ -1,9 +1,28 @@
 import 'package:flutter/widgets.dart';
 
-/// A provider widget that makes a value available to descendant widgets.
+/// A Flutter widget that makes any value available to descendant widgets via dependency injection.
 ///
-/// This is purely for dependency injection - it does not rebuild when the
-/// value changes. Use [MuBuilder] for listening to state changes.
+/// [MuProvider] is fully generic and can provide any type - making it perfect for injecting
+/// [MuLogic] instances, repositories, services, or other dependencies throughout your widget tree.
+///
+/// This is purely for dependency injection - it does not rebuild when the value changes.
+/// Use [MuBuilder] for listening to state changes.
+///
+/// ```dart
+/// MuProvider<CounterLogic>(
+///   value: CounterLogic(),
+///   child: CounterPage(),
+/// );
+/// ```
+///
+/// Access from anywhere in the subtree:
+/// ```dart
+/// // For MuLogic instances
+/// final logic = context.logic<CounterLogic>();
+///
+/// // For any type
+/// final repo = context.read<AuthRepository>();
+/// ```
 ///
 /// If the provided value implements [ChangeNotifier] (like [MuLogic]),
 /// it will be automatically disposed when this provider is disposed.

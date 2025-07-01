@@ -5,9 +5,29 @@ import 'package:mu_state/mu_state.dart';
 typedef MuListenerBuilder = Widget Function(Widget child);
 
 /// A Flutter widget that merges multiple [MuListener] widgets into one.
-/// [MuMultiListener] improves the readability and eliminates the need to nest multiple [MuListener]s.
 ///
-/// Example:
+/// [MuMultiListener] improves readability and eliminates the need to nest multiple [MuListener]s.
+/// This is a convenience widget that allows you to compose multiple listeners
+/// without deeply nested widget trees.
+///
+/// Instead of nesting listeners like this:
+/// ```dart
+/// MuListener<StateA>(
+///   logic: logicA,
+///   listener: (context, state) {
+///     // handle state A changes
+///   },
+///   child: MuListener<StateB>(
+///     logic: logicB,
+///     listener: (context, state) {
+///       // handle state B changes
+///     },
+///     child: ChildWidget(),
+///   ),
+/// )
+/// ```
+///
+/// You can use [MuMultiListener]:
 /// ```dart
 /// MuMultiListener(
 ///   listeners: [

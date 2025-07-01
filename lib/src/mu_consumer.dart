@@ -2,9 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:mu_state/mu_state.dart';
 
 /// A Flutter widget which combines [MuBuilder] and [MuListener] into one.
+///
 /// [MuConsumer] exposes a [builder] and [listener] in order to react to new states.
 /// [MuConsumer] is analogous to a nested [MuListener] and [MuBuilder] but reduces
 /// the amount of boilerplate needed.
+///
+/// By default, the listener is NOT called on the initial state (`lazy: true`).
+/// Set `lazy: false` to call the listener immediately with the current state.
 ///
 /// ```dart
 /// MuConsumer<CounterState>(
