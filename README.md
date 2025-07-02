@@ -21,10 +21,10 @@ Additional widgets are available for handling multiple states or providers: `MuM
 ## Screenshots
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/idle.png" width="196"/>
-  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/success.png" width="196"/>
-  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/loading.png" width="196"/>
-  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/error.png" width="196"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/idle.png" width="180"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/success.png" width="180"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/loading.png" width="180"/>
+  <img src="https://raw.githubusercontent.com/erf/mu_state/main/screenshots/error.png" width="180"/>
 </div>
 
 ## Usage
