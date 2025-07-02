@@ -1,6 +1,6 @@
 name: mu_state
 description: Minimal Cubit-inspired state management using Flutter's built-in primitives. No external dependencies.
-version: 2.0.0+2
+version: 2.0.0+3
 homepage: https://github.com/erf/mu_state
 
 topics:
