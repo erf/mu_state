@@ -1,3 +1,7 @@
+## 2.0.0+5
+
+- Document `MuComparable` shallow equality and copy-on-write pattern for collections
+
 ## 2.0.0+4
 
 - Add screenshots
