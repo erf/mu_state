@@ -207,6 +207,21 @@ class CounterState with MuComparable {
 
 The `props` list should include all properties that determine equality. When state changes, widgets will only rebuild if the new state is different from the previous state based on these properties.
 
+#### Updating collections
+
+Equality is **shallow**: entries in `props` are compared with Dart's default `==`. For `List`, `Map`, and `Set` that means *reference* equality, not content equality. Always create a new collection when updating state — never mutate in place:
+
+```dart
+// ✅ Correct — new list reference, listeners fire.
+emit(state.copyWith(items: [...state.items, newItem]));
+
+// ❌ Wrong — same reference, listeners do NOT fire.
+state.items.add(newItem);
+emit(state.copyWith(items: state.items));
+```
+
+If you'd rather have deep collection equality out of the box, [`equatable`](https://pub.dev/packages/equatable) is a drop-in alternative with the same `props` API.
+
 ### MuListener
 
 `MuListener` performs side effects in response to state changes - navigation, showing dialogs, etc. The `listener` is called once per state change and by default NOT on initial state (`lazy: true`). Set `lazy: false` to call the listener immediately with the current state.
